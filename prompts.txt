@@ -1,0 +1,4 @@
+Common prompts
+
+Project details: We are using storybook, styled-components and create react app.
+Theming: The widgets are modern with black blue background, it uses the following colors: #102131 - gradient color for background, #030714 - gradient color for background, #24111D - stroke color. Border-radius of 30px.

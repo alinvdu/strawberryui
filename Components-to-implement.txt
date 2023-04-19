@@ -1,0 +1,13 @@
+List of components:
+Music Widget
+Calendar
+Pagination
+
+Input - with/without icon
+To-do list
+Login Form
+Switch
+Slider
+Tabs
+Time Widget
+Date Picker
