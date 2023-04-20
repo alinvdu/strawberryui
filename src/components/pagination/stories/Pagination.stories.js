@@ -1,8 +1,8 @@
-import Button from './../Button';
+import Pagination from './../Pagination';
 
 export default {
-  title: 'Button',
-  component: Button,
+  title: 'Components/Pagination',
+  component: Pagination,
     parameters: {
         backgrounds: {
             default: 'black',
@@ -16,7 +16,10 @@ export default {
     }
 };
 
-export const ButtonStory = {
+export const PaginationStory = {
   args: {
+    totalElements: 100,
+    elementsPerPage: 10,
+    onPageChange: () => {}
   },
 };

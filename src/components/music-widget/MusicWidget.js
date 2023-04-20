@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import strawberryBg from './strawberry-bg.jpg';
 import SvgPlayButton from './SvgPlayButton';
-import Button, { Rectangle, VARIANTS } from './../button/Button';
+import Button, { Rectangle, VARIANTS } from '../buttons/PrimaryButton';
 import PlayIcon from '../icons/svgs/PlayIcon';
 import NextIcon from '../icons/svgs/NextIcon';
 import PrevIcon from '../icons/svgs/PrevIcon';

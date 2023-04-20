@@ -1,7 +1,7 @@
 import Calendar from './../Calendar';
 
 export default {
-  title: 'Calendar',
+  title: 'Components/Calendar',
   component: Calendar,
     parameters: {
         backgrounds: {

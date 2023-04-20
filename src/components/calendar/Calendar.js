@@ -1,55 +1,97 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import decoratedWonkyStrawberryBg from './wonky-strawberry.png';
+import SecondaryButton from '../buttons/SecondaryButton';
+import { ArrowLeft, ArrowRight } from '../buttons/SecondaryButtonUtils';
 
 
 /**
  * CSS part
  */
 const WidgetContainer = styled.div`
-  background: linear-gradient(to bottom, #102131, #030714),
-              url(strawberry-image.jpg) no-repeat center center fixed;
-  border-radius: 30px;
+    position: relative;
+    background:
+        linear-gradient(221.07deg, #206D8E 5.96%, #0E405C 17.32%, #092F4A 27.37%, #04283C 36.3%, #012336 47.7%, #022539 56.93%, #052E44 74.64%, #0F414B 83.98%, #257091 95.67%);
+    border: 1px solid rgba(47, 122, 122, 1);
+    border-radius: 30px;
+    width: 350px;
+    height: 380px;
+    padding: 35px 35px 10px 35px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+
+    &::after {
+        position: absolute;
+        content: '';
+        top: -1px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+        background: linear-gradient(176.26deg, rgba(47, 141, 170, 0.5) 8.15%, rgba(11, 40, 66, 0) 29.44%);
+    }
 `;
 
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding-bottom: 20px;
   color: white;
-`;
-
-const ArrowButton = styled.button`
-  background-color: transparent;
-  color: white;
-  font-size: 24px;
-  border: none;
-  cursor: pointer;
-  outline: none;
+  z-index: 2;
+  align-items: center;
 `;
 
 const MonthYear = styled.div`
-  font-size: 24px;
+  font-size: 21px;
+  font-weight: 300;
 `;
 
 const DaysOfWeek = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  padding: 10px 0;
   color: white;
+  font-weight: 300;
+  z-index: 2;
 `;
 
 const DayOfMonth = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50px;
+  height: 30px;
+  font-weight: 300;
+  width: 15px;
   color: white;
+  z-index: 2;
 `;
 
 const StyledWeekContainer = styled.div`
     display: flex;
     justify-content: space-between;
+`;
+
+const DecoratingLine = styled.div`
+    width: 100%;
+    height: 1px;
+    background: rgba(72, 130, 148, 1);
+    margin: 20px 0;
+`;
+
+const StyledDaysOfWeek = styled.div`
+    width: 15px;
+    text-align: center;
+`;
+
+const DecoratedWonkyStrawberryBg = styled.img`
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    margin-left: -80px;
+    opacity: 0.75;
+    z-index: 1;
 `;
 
 const Calendar = ({ selectedDate, onDateChange }) => {
@@ -134,16 +176,17 @@ const Calendar = ({ selectedDate, onDateChange }) => {
 
     return (
         <WidgetContainer>
+            <DecoratedWonkyStrawberryBg src={decoratedWonkyStrawberryBg} />
             <Header>
                 <MonthYear>{`${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`}</MonthYear>
                 <div>
-                    <ArrowButton onClick={handlePrevMonth}>{"<"}</ArrowButton>
-                    <ArrowButton onClick={handleNextMonth}>{">"}</ArrowButton>
+                    <SecondaryButton icon={<ArrowLeft />} onClick={handlePrevMonth} />
+                    <SecondaryButton icon={<ArrowRight />} onClick={handleNextMonth} />
                 </div>
             </Header>
             <DaysOfWeek>
                 {daysOfWeek.map((day) => (
-                    <div key={day}>{day}</div>
+                    <StyledDaysOfWeek key={day}>{day}</StyledDaysOfWeek>
                 ))}
             </DaysOfWeek>
             {weeksOfMonth.map((week, i) => (
@@ -164,6 +207,7 @@ const Calendar = ({ selectedDate, onDateChange }) => {
                     ))}
                 </StyledWeekContainer>
             ))}
+            <DecoratingLine />
         </WidgetContainer>
     );
 };

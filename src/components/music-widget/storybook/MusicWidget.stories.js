@@ -1,7 +1,7 @@
 import MusicWidget from './../MusicWidget';
 
 export default {
-  title: 'MusicWidget',
+  title: 'Components/MusicWidget',
   component: MusicWidget,
     parameters: {
         backgrounds: {
