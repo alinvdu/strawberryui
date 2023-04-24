@@ -125,6 +125,7 @@ const StyledContentWrapper = styled.div`
 
 const StyledTextFieldWrapper = styled.div`
     margin-top: 5px;
+    width: 269px;
 `;
 
 const StyledButtonsWrapper = styled.div`
@@ -258,7 +259,6 @@ const TodoList = ({ items }) => {
                     </TodoListWrapper>
                     <StyledTextFieldWrapper>
                         <TextField
-                            value={newTodo}
                             onChange={(value) => setNewTodo(value)}
                             placeholder="Enter a new todo"
                             controlledValue={newTodo}

@@ -13,7 +13,14 @@ export default {
             },
             ],
         },
-    }
+    },
+    decorators: [
+      (story) => (
+        <div style={{ width: '269px', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          {story()}
+        </div>
+      )
+    ]
 };
 
 export const TextFieldStory = {

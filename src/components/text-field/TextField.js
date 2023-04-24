@@ -6,7 +6,7 @@ import { VARIANTS } from '../buttons/PrimaryButton';
 import { AcceptIcon } from './TextFieldsUtils';
 
 const Wrapper = styled.div`
-    width: 269px;
+    width: 100%;
     height: 55px;
     background: linear-gradient(270deg, #072027 0%, #061B26 55.73%, #05202C 100%);
     border: 1px solid #142A34;
@@ -20,7 +20,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
     display: flex;
     align-items: center;
-    width: 258px;
+    width: calc(100% - 11px);
     height: 45px;
     background: linear-gradient(217.3deg, #000D19 21.62%, #001020 86.1%);
     border-radius: 27.5px;
@@ -57,7 +57,7 @@ const InputBorder = styled.div`
     background: linear-gradient(90deg, #011020 0%, rgba(42, 106, 111, 0.99) 44.79%, #010F1D 100%);
 `;
 
-const TextField = ({ onSubmit, onChange, placeholder, controlledValue }) => {
+const TextField = ({ onSubmit, onChange, placeholder, controlledValue, isPassword = false }) => {
   const [value, setValue] = useState('');
 
   const handleInputChange = (e) => {
@@ -79,7 +79,7 @@ const TextField = ({ onSubmit, onChange, placeholder, controlledValue }) => {
       <Container>
         {onSubmit && <PrimaryButton icon={<AcceptIcon />} variant={VARIANTS.BLUE} sizeVariant={SIZER_VARIANTS.SMALL} onClick={handleButtonClick}>Submit</PrimaryButton>}
         <InputWrapper>
-            <Input type="text" placeholder={placeholder || 'Strawberry Fields Forever'} value={onChange ? controlledValue : value} onChange={handleInputChange} onClick={(e) => e.stopPropagation()} />
+            <Input type={isPassword ? "password" : "text"} placeholder={placeholder || 'Strawberry Fields Forever'} value={onChange ? controlledValue : value} onChange={handleInputChange} onClick={(e) => e.stopPropagation()} />
             <InputBorder />
         </InputWrapper>
       </Container>
