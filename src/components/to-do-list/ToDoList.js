@@ -105,7 +105,7 @@ const TodoListItemText = styled.div`
   opacity: 0.85;
 `;
 
-const DeleteButton = styled.button`
+export const DeleteButton = styled.button`
   background: none;
   border: none;
   color: rgba(175, 0, 0, 1);

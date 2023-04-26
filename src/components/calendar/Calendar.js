@@ -94,6 +94,10 @@ const DecoratedWonkyStrawberryBg = styled.img`
     z-index: 1;
 `;
 
+const StyledButtonsWrapper = styled.div`
+    display: flex;
+`;
+
 const Calendar = ({ selectedDate, onDateChange }) => {
     const monthNames = [
         "January",
@@ -179,10 +183,14 @@ const Calendar = ({ selectedDate, onDateChange }) => {
             <DecoratedWonkyStrawberryBg src={decoratedWonkyStrawberryBg} />
             <Header>
                 <MonthYear>{`${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`}</MonthYear>
-                <div>
+                <StyledButtonsWrapper>
                     <SecondaryButton icon={<ArrowLeft />} onClick={handlePrevMonth} />
-                    <SecondaryButton icon={<ArrowRight />} onClick={handleNextMonth} />
-                </div>
+                    <div style={{
+                        marginLeft: 8
+                    }}>
+                        <SecondaryButton icon={<ArrowRight />} onClick={handleNextMonth} />
+                    </div>
+                </StyledButtonsWrapper>
             </Header>
             <DaysOfWeek>
                 {daysOfWeek.map((day) => (

@@ -1,8 +1,8 @@
-import TimeWidget from './../TimeWidget';
+import Slider from './../Slider';
 
 export default {
-  title: 'Components/TimeWidget',
-  component: TimeWidget,
+  title: 'Components/Slider',
+  component: Slider,
     parameters: {
         backgrounds: {
             default: 'black',
@@ -16,7 +16,8 @@ export default {
     }
 };
 
-export const TimeWidgetStory = {
+export const SliderStory = {
   args: {
+    currentDate: new Date()
   },
 };
