@@ -1,4 +1,191 @@
 Common prompts
 
-Project details: We are using storybook, styled-components and create react app.
-Theming: The widgets are modern with black blue background, it uses the following colors: #102131 - gradient color for background, #030714 - gradient color for background, #24111D - stroke color. Border-radius of 30px.
+Project details
+We are using storybook, styled-components and create react app.
+
+Theming
+The widgets are modern with black blue background, it uses the following colors:
+#102131 - gradient color for background, #030714 -gradient color for background, #24111D -
+stroke color. Border-radius of 30px.
+
+
+Folder structure
+Create a folder structure for an application called strawberry-ui which is
+a framework for open-source react components. There are two main parts of the app, the
+components themselves which contain: music widget, pagination, slider, switch, tabs,
+calendar, time widget, date picker and the presentation site which has: logo and a text,
+two pages, one for theming view and the other for seeing prompts examples. It also contains a
+small header with a switch and a button.
+
+
+Music Widget
+Code (ChatGPT):
+Create a React component for a music widget, the component accepts an object interface (or
+prop-type) and the object has the following fields: title, author, album. It also receives
+four functions that will be called inside the component on the following three buttons:
+Pause, Play, Next Song, Previous Song.
+
+The dimensions of the widget are the following: 350px wide, 400px height. It's composed of
+two parts: the top part has the author name on top and the title of the song and album on
+the bottom and it has 328px height. The top part also has a background-image of a strawberry. 
+
+The bottom part contains the buttons aligned in the center, on the left we have previous
+song icon, on the middle we have pause/play song and on the right we have next song icon.
+
+Let's add an internal state to the component with the initial value of playing = true. Then
+if playing is true we show the pause button, if playing is false we show the play button. If
+the user clicks play we change the state and the same with pause. At the same time, the
+component receive another prop function called onStateChange that will be called with true
+if the state changes to true and false otherwise.
+
+Let's remove the onStateChange prop and just stick with onPlay and onPause
+
+Design (Midjourney):
+mui-music-widget.png strawberry-widget.png strawberry ui widget for listening
+to music, play button, change song, name of the artist, description, minimalist design,
+black and blue background, strawberry, clean, high resolution, 4k
+
+
+Calendar
+Code (ChatGPT):
+Create a widget component for a Calendar. It can receive a selected date, a function that
+will be called when the date will change. It should have a header part and main content part.
+The header part should have two elements that are spaced around the margins. The left
+element should hold the date and the year and the right element should contain two arrows
+(left & right) that we can use in order to change the month. It should have a background
+that's a combination between a gradient and a strawberry image.
+
+Main content should hold the days of the week (S, M, T, W, T, F, S) each on a separate
+column and the days of the month should be divided upon those specific columns. In total
+should be 7 columns.
+
+Design (Midjourney):
+mui-design.png strawberry-generic-widget.png strawberry ui widget for calendar
+in the web browser, flat surface, date picker, days of the month, month, minimalist design,
+black and blue background, strawberry, clean, high resolution
+
+
+
+Pagination
+Code (ChatGPT):
+Create a React component for pagination. It should receive the total number of elements and
+how many elements are for each page as prop. It should also receive a callback function for
+when the page is being changed, which will be called with the page index. It should keep an
+internal state of it's current page.
+
+The component has three parts, the left container which contains the left arrow icon, the
+middle container which holds the pages number and the right container which contains the
+right icon.
+
+The middle container can hold up to 5 numbers, if the total number of pages are more than
+5 than we can show the first page, the last page and 3 pages that are near the current page.
+Everything in between will be marked by dots.
+
+Design (Midjourney):
+mui-pagination.png strawberry-generic-widget.png strawberry ui widget for
+pagination flat in web browser, next page, prev page icons, number of entities,
+minimalist design, black and blue background, strawberry, clean, high resolution
+
+
+
+ToDoList
+Code (ChatGPT):
+Create a React component named ToDoList. As props it can receive a few pre-defined items,
+that can have the following fields: description as a string, done as a boolean. The component
+itself is 350px wide and 535px long. It is composed of the following elements:
+
+Wrapper component with a linear gradient.
+Container component with a linear gradient and a background picture mixed.
+At top it will have a decorating strawberry component image, positioned absolute relative to
+the container.
+
+In the middle it will render the list of todos with a background and a small padding. It will
+also have a checkbox in front denoting if the todo is checked or not. A TextField beneath
+the rendered todos where the user can input the next item.
+
+Two buttons placed:
+1. At the bottom in the center, add button, it has a wrapper with a border and then the
+button itself.
+2. Near the first button but on right top of it. It's just a button with and X.
+
+The component should be able to add new items using the TextField and the Add Button, the
+new item should appear in the list. The rendered list should have a height of 190px and the
+rest should be scrollable.
+
+Design (Midjourney):
+mui-design.png strawberry-generic-widget.png strawberry ui widget for user
+input, text form, rounded outlined web input, minimalist design, black blue background,
+clean, high resolution
+
+
+Login Page
+Code (ChatGPT):
+Create a React component for Login the user. It should receive a login url and a function
+that will be called upon login completion.
+
+The wrapper should be 450px wide by 374px height, with a border-radius of 45px. It should
+also have a container with a border-radius of 45px that also uses a background image with
+a strawberry.
+
+The header part contains a decorated image with a strawberry and the Login text.
+The main part contains a form with 3 rows:
+- The first row contains an user icon and the username textfield.
+- The second row contains the password icon and the password textfield.
+- The third row contains the login button.
+
+And the end of the component we have a row with Forgot Password question.
+
+Design (Midjourney):
+mui-design.png generic-strawberry.png strawberry ui widget for user
+input, text form, rounded outlined web input, minimalist design, black blue background,
+clean, high resolution
+
+
+Time Widget Component
+Code (ChatGPT):
+Lets implement a Time Widget component in React that will give the user the ability to
+select Hours, Minutes and Seconds.
+
+On top part of the widget we three columns, each of them denoting title for the list that
+are beneath them in which you can actually scroll and select the values.
+
+The first column is Hours, second is Minutes and third is Seconds.
+
+Beneath this three title columns there is a wide space with a decorating image of
+strawberries, that has full width.
+
+Beneath the strawberry image, we find the selected content container, it has three columns
+showing the user the currently selected values for each column (hours, minutes, seconds).
+If there is no selected value, then we show a blue line. The selected content container,
+has a background gradient and is delimited by shadow and border.
+
+Next we have three columns which contain lists for the user to pick the values that populate
+each column (hours, minutes, seconds). The lists are scrollable, and the center elements
+are the one being picked. The center elements are highlighted by two bars denoting the
+currently selected element. The user can also click on any value in order for the selection
+to jump at that specific value. For instance if the minute 13 is centered in the list, then
+it will be selected, if the minute 16 is not centered but the user clicks on it, the
+component will move it to the center and select it.
+
+Requirement: the scroll should be able to move just by 1 value when scrolling softly but
+move faster when scrolling rapidly.
+
+Design (Midjourney):
+mui-design.png strawberry-generic-widget.png strawberry ui widget for choosing
+time, text input, time component, am/pm, clock icon, dropdown list, scroll, minimalist
+design, black blue background, clean, high resolution
+
+
+Slider
+Code (ChatGPT):
+Let's create a React component for a Slider. It has the width of 66px and height of 195px
+& border-radius of 25px. It has a wrapper and inside the wrapper it has a container composed of
+3 elements:
+- The slider button, which is a round button that can be moved on the slider line.
+- The slider line which is 150px height.
+- A decorated strawberry at the base of the slider line.
+
+Design (Midjourney):
+mui-design.png strawberry-generic-widget.png strawberry ui widget for slider
+component, slider with button, line, minimalist design, black blue background, clean, high
+resolution
