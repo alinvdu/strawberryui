@@ -11,10 +11,11 @@ const StyledWrapper = styled.button`
     background: linear-gradient(180deg, #5FBCD0 0%, #338AA6 100%);
     border: 1px solid #79A8CE;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
 `;
 
-const SecondaryButton = ({ icon }) => (
-    <StyledWrapper>
+const SecondaryButton = ({ icon, onClick }) => (
+    <StyledWrapper onClick={onClick}>
         {icon}
     </StyledWrapper>
 );

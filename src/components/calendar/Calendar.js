@@ -16,7 +16,7 @@ const WidgetContainer = styled.div`
     border-radius: 30px;
     width: 350px;
     height: 380px;
-    padding: 35px 35px 10px 35px;
+    padding: 35px 35px 5px 25px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -46,6 +46,7 @@ const Header = styled.div`
 const MonthYear = styled.div`
   font-size: 21px;
   font-weight: 300;
+  margin-left: 5px;
 `;
 
 const DaysOfWeek = styled.div`
@@ -58,14 +59,21 @@ const DaysOfWeek = styled.div`
 `;
 
 const DayOfMonth = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 30px;
-  font-weight: 300;
-  width: 15px;
-  color: white;
-  z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 26px;
+    font-weight: 300;
+    width: 26px;
+    margin: 2px 0;
+    color: white;
+    z-index: 2;
+    cursor: pointer;
+
+    ${({ active }) => active ? `
+        border: 1px solid rgba(255, 255, 255, 0.75);
+        border-radius: 50%;
+    ` : 'border: 1px solid transparent;'};
 `;
 
 const StyledWeekContainer = styled.div`
@@ -81,7 +89,7 @@ const DecoratingLine = styled.div`
 `;
 
 const StyledDaysOfWeek = styled.div`
-    width: 15px;
+    width: 26px;
     text-align: center;
 `;
 
@@ -98,7 +106,7 @@ const StyledButtonsWrapper = styled.div`
     display: flex;
 `;
 
-const Calendar = ({ selectedDate, onDateChange }) => {
+const Calendar = ({ selectedDate, onDateChange = () => {} }) => {
     const monthNames = [
         "January",
         "February",
@@ -121,7 +129,7 @@ const Calendar = ({ selectedDate, onDateChange }) => {
     const handlePrevMonth = () => {
         setCurrentDate((prevDate) => {
             const prevMonthDate = new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1);
-            onDateChange(prevMonthDate);
+            console.log(prevMonthDate.getMonth());
             return prevMonthDate;
         });
     };
@@ -202,6 +210,7 @@ const Calendar = ({ selectedDate, onDateChange }) => {
                     {week.map((day) => (
                         <DayOfMonth
                             key={day ? day.getDate() : Math.random()}
+                            active={day && day.getDate() === currentDate.getDate()}
                             onClick={() => {
                                 if (day) {
                                     setCurrentDate(day);
