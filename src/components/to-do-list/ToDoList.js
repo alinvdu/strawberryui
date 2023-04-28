@@ -94,7 +94,7 @@ const TodoListItem = styled.div`
   padding: 8px;
   box-sizing: border-box;
   color: white;
-  font-weight: 200;
+  font-weight: 300;
   font-size: 15px;
   border-radius: 5px;
 `;

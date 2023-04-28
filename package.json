@@ -62,5 +62,6 @@
     "storybook-dark-mode": "^3.0.0",
     "styled-components": "^5.3.9",
     "webpack": "^5.79.0"
-  }
+  },
+  "homepage": "/strawberry-ui"
 }

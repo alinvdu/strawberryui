@@ -169,23 +169,44 @@ const LogoText = styled.h1`
     }
 `;
 
-const WidgetButton = styled.button`
-    font-family: 'Source Sans Pro', sans-serif;
-    font-weight: 400;
-    width: 210px;
-    height: 40px;
-    min-height: 40px;
+const WidgetButtonWrapper = styled.div`
+    position: relative;
+    display: flex;
+`
 
-    border: 1px solid rgba(38, 209, 220, 0.99);
-    box-shadow: 0px 0px 9px 1px rgba(38, 209, 220, 0.8);
+const WidgetButton = styled.button`
+    position: relative;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 400;
+    flex-basis: 0;
+    padding: 8px 15px 8px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px solid rgba(38, 209, 220, 0.99);
+    box-shadow: 0px 0px 9px 1px rgba(38, 209, 220, 0.5);
     border-radius: 22.5px;
     background: none;
-    color: rgba(38, 209, 220, 0.99);
-    font-size: 16px;
+    color: #45ecf7;
+    font-size: 17px;
+    opacity: 0.92;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 1;
+        box-shadow: 0px 0px 9px 1px rgba(38, 209, 220, 0.9);
+    }
+
+    span {
+        margin-right: 10px;
+        white-space: nowrap;
+    }
 `;
 
 const SelectionWrapper = styled.div`
-    border: ${({ isActive }) => isActive ? '1px solid rgba(38, 209, 220, 0.99)' : '1px solid transparent'};
+    border: ${({ isActive }) => isActive ? '2px solid rgba(38, 209, 220, 0.99)' : '2px solid transparent'};
     box-shadow: ${({ isActive }) => isActive ? '0px 0px 15px 1px rgba(38, 209, 220, 0.79)' : ''};
     border-radius: 30px;
     margin-bottom: 65px;
@@ -193,7 +214,7 @@ const SelectionWrapper = styled.div`
     cursor: pointer;
 
     &:hover {
-        border: ${({ isActive }) => isActive ? '1px solid rgba(38, 209, 220, 0.99)' : '1px solid rgba(38, 209, 220, 0.59)'};
+        border: ${({ isActive }) => isActive ? '2px solid rgba(38, 209, 220, 0.99)' : '2px solid rgba(38, 209, 220, 0.59)'};
     }
 
     @media
@@ -683,11 +704,11 @@ const ButtonsWrapper = styled.div`
 `;
 
 const Tooltip = styled.span`
-    display: none;
     position: absolute;
-    bottom: 0px;
+    bottom: ${({ bottom }) => bottom ? `${bottom}px` : '0'};
     left: 50%;
-    transform: translate(-50%, 100%);
+    ${({ marginLeft }) => marginLeft ? `margin-left: ${marginLeft}px;` : ''};
+    transform: translate(-50%, -100%);
     padding: 5px;
     border-radius: 5px;
     background: rgba(19, 31, 36, 1);
@@ -701,40 +722,32 @@ const Tooltip = styled.span`
 const CopyButtonWrapper = styled.div`
     position: relative;
     cursor: pointer;
-
-    &:hover {
-        ${Tooltip} {
-            display: block;
-        }
-    }
 `;
 
 const ExpandButtonWrapper = styled.div`
     position: relative;
     cursor: pointer;
-
-    &:hover {
-        ${Tooltip} {
-            display: block;
-        }
-    }
 `;
 
-const CopyToClipboardButton = ({ onClick }) => (
+const CopyToClipboardButton = ({ onClick, fill = "rgba(38, 209, 220, 0.99)", marginTop = 0 }) => (
     <svg xmlns="http://www.w3.org/2000/svg" style={{
-        marginTop: 5
-    }} onClick={onClick} width="24" height="24" viewBox="0 0 24 24" fill="rgba(38, 209, 220, 0.99)"><path d="M20 2H10c-1.103 0-2 .897-2 2v4H4c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2v-4h4c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zM4 20V10h10l.002 10H4zm16-6h-4v-4c0-1.103-.897-2-2-2h-4V4h10v10z"></path></svg>
+        marginTop
+    }} onClick={onClick} width="24" height="24" viewBox="0 0 24 24" fill={fill}><path d="M20 2H10c-1.103 0-2 .897-2 2v4H4c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2v-4h4c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zM4 20V10h10l.002 10H4zm16-6h-4v-4c0-1.103-.897-2-2-2h-4V4h10v10z"></path></svg>
 );
 
-const ExpandButton = ({ onClick }) => (
-    <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{
+const CheckButton = ({ fill = "rgba(38, 209, 220, 0.99)", marginTop = 0 }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" style={{ marginTop }} width="24" height="24" viewBox="0 0 24 24" fill={fill}><path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"></path></svg>
+)
+
+const ExpandButton = ({ onClick, onMouseEnter, onMouseLeave }) => (
+    <svg onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{
         marginTop: 5,
         marginRight: 10
     }} fill="rgba(38, 209, 220, 0.99)"><path d="M5 12H3v9h9v-2H5zm7-7h7v7h2V3h-9z"></path></svg>
 );
 
-const CollapseButton = ({ onClick }) => (
-    <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{
+const CollapseButton = ({ onClick, onMouseEnter, onMouseLeave }) => (
+    <svg onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}  onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{
         marginTop: 5,
         marginRight: 10
     }} fill="rgba(38, 209, 220, 0.99)"><path d="M2 15h7v7h2v-9H2v2zM15 2h-2v9h9V9h-7V2z"></path></svg>
@@ -750,6 +763,8 @@ const Prompt = ({ description, title }) => {
     const [expandButtonTooltipText, setExpandButtonToolTipText] = useState('Show all text');
     const [showExpandedButton, setShowExpandedButton] = useState(false);
     const [isExpanded, setExpanded] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(false);
+    const [showExpandTooltip, setShowExpandTooltip] = useState(false);
     const descriptionRef = useRef(null);
 
     useEffect(() => {
@@ -772,26 +787,47 @@ const Prompt = ({ description, title }) => {
                             <ExpandButton onClick={() => {
                                 setExpanded(true);
                                 setExpandButtonToolTipText('Show less');
+                                setShowExpandTooltip(false);
+                            }} onMouseEnter={() => {
+                                console.log('this')
+                                setShowExpandTooltip(true);
+                            }} onMouseLeave={() => {
+                                setShowExpandTooltip(false);
                             }} /> :
                             <CollapseButton onClick={() => {
                                 setExpanded(false);
                                 setExpandButtonToolTipText('Show all text');
+                                setShowExpandTooltip(false);
+                            }} onMouseEnter={() => {
+                                setShowExpandTooltip(true);
+                            }} onMouseLeave={() => {
+                                setShowExpandTooltip(false);
                             }} />}
-                        <Tooltip>{expandButtonTooltipText}</Tooltip>
+                        {showExpandTooltip ? <Tooltip>{expandButtonTooltipText}</Tooltip> : null}
                     </ExpandButtonWrapper> : null}
-                <CopyButtonWrapper onMouseLeave={() => {
-                    setTooltipText('Copy to clipboard');
+                <CopyButtonWrapper onMouseEnter={() => {
+                    setShowTooltip(true);
+                }} onMouseLeave={() => {
+                    if (tooltipText !== 'Copied!') {
+                        setShowTooltip(false);
+                    }
                 }}>
-                    <CopyToClipboardButton onClick={() => {
-                        let toCopyDescription = description;
-                        if (typeof description === 'object') {
-                            toCopyDescription = descriptionRef.current.textContent
-                        }
-                        navigator.clipboard.writeText(toCopyDescription).then(() => {
-                            setTooltipText('Copied!')
-                        });
-                    }} />
-                    <Tooltip>{tooltipText}</Tooltip>
+                    {tooltipText !== 'Copied!' ?
+                        <CopyToClipboardButton marginTop={5} onClick={() => {
+                            let toCopyDescription = description;
+                            if (typeof description === 'object') {
+                                toCopyDescription = descriptionRef.current.textContent
+                            }
+                            navigator.clipboard.writeText(toCopyDescription).then(() => {
+                                setTooltipText('Copied!');
+                                setTimeout(() => {
+                                    setTooltipText('Copy to clipboard');
+                                    setShowTooltip(false);
+                                }, 3000);
+                            });
+                        }} /> :
+                        <CheckButton marginTop={5} />}
+                    {showTooltip ? <Tooltip>{tooltipText}</Tooltip> : null}
                 </CopyButtonWrapper>
             </ButtonsWrapper>
         </PromptWrapper>
@@ -936,33 +972,33 @@ const ApiAndPrompts = () => {
         return (
             <ApiAndPromptsWrapper ref={componentListRef}>
                 <Column>
-                <ColumnItem>
-                    {renderProjectSetup()}
-                </ColumnItem>
-                <ColumnItem>
-                    {renderMusicWidgetPrompt()}
-                </ColumnItem>
-                <ColumnItem>
-                    {renderLoginpagePrompt()}
-                </ColumnItem>
-                <ColumnItem>
-                    {renderTimeWidgetPrompt()}
-                </ColumnItem>
-            </Column>
-            <Column>
-                <ColumnItem>
-                    {renderCalendarPrompt()}
-                </ColumnItem>
-                <ColumnItem>
-                    {renderPaginationPrompt()}
-                </ColumnItem>
-                <ColumnItem>
-                    {renderSliderPrompt()}
-                </ColumnItem>
-                <ColumnItem>
-                    {renderToDoListPrompt()}
-                </ColumnItem>
-            </Column>
+                    <ColumnItem>
+                        {renderProjectSetup()}
+                    </ColumnItem>
+                    <ColumnItem>
+                        {renderMusicWidgetPrompt()}
+                    </ColumnItem>
+                    <ColumnItem>
+                        {renderLoginpagePrompt()}
+                    </ColumnItem>
+                    <ColumnItem>
+                        {renderTimeWidgetPrompt()}
+                    </ColumnItem>
+                </Column>
+                <Column>
+                    <ColumnItem>
+                        {renderCalendarPrompt()}
+                    </ColumnItem>
+                    <ColumnItem>
+                        {renderPaginationPrompt()}
+                    </ColumnItem>
+                    <ColumnItem>
+                        {renderSliderPrompt()}
+                    </ColumnItem>
+                    <ColumnItem>
+                        {renderToDoListPrompt()}
+                    </ColumnItem>
+                </Column>
             </ApiAndPromptsWrapper>
         );
     }
@@ -1005,10 +1041,14 @@ const ApiAndPrompts = () => {
 
 const App = () => {
     const [selectedOption, setSelectedOption] = useState('components');
+    const [tooltipText, setTooltipText] = useState('Copy!');
+    const [showTooltip, setShowTooltip] = useState(false);
 
     const handleOptionSelect = (option) => {
         setSelectedOption(option);
     };
+
+    const npmInstallCommand = "npm install strawberry-ui";
 
     return (
         <Wrapper>
@@ -1027,14 +1067,34 @@ const App = () => {
                                 <OpenSourceDescription>
                                     It's free and you can contribute directly!
                                 </OpenSourceDescription>
-                                <OpenSourceLink>
+                                <OpenSourceLink href="https://github.com/bobergsatoko/strawberry-ui">
                                     Learn More
                                 </OpenSourceLink>
                             </OpenSourceWrapper>
                         </LeftContentWrapper>
                     </LeftComponent>
                     <RightComponent>
-                        <WidgetButton>npm install strawberry-ui</WidgetButton>
+                        <WidgetButtonWrapper>
+                            <WidgetButton onClick={() => {
+                                navigator.clipboard.writeText(npmInstallCommand).then(() => {
+                                    setTooltipText('Copied!');
+                                    setTimeout(() => {
+                                        setShowTooltip(false);
+                                        setTooltipText('Copy!');
+                                    }, 3000);
+                                });
+                            }} onMouseEnter={() => {
+                                setShowTooltip(true);
+                            }} onMouseLeave={() => {
+                                if (tooltipText !== 'Copied!') {
+                                    setShowTooltip(false);
+                                }
+                            }}>
+                                <span>{npmInstallCommand}</span>
+                                {tooltipText !== 'Copied!' ? <CopyToClipboardButton fill="rgba(38, 209, 220, 0.99)" /> : <CheckButton fill="rgba(38, 209, 220, 0.99)" />}
+                                {showTooltip ? <Tooltip bottom={15} marginLeft={95}>{tooltipText}</Tooltip> : null}
+                            </WidgetButton>
+                        </WidgetButtonWrapper>
                         {selectedOption === 'components' ? <ComponentList /> : <ApiAndPrompts />}
                     </RightComponent>
                 </MainContainer>
