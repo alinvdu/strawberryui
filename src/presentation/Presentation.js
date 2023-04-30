@@ -1097,7 +1097,7 @@ const App = () => {
     const [tooltipText, setTooltipText] = useState('Copy!');
     const [showTooltip, setShowTooltip] = useState(false);
     const [showSwitchThemeTooltip, setShowSwitchThemeTooltip] = useState(false);
-    const [theme, setTheme] = useState('light');
+    const [theme, setTheme] = useState('dark');
 
     const handleOptionSelect = (option) => {
         setSelectedOption(option);
