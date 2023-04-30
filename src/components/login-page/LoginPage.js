@@ -11,7 +11,7 @@ import TextField from "../text-field/TextField";
 
 const Wrapper = styled.div`
     position: relative;
-    width: 450px;
+    width: ${({ width }) => width}px;
     height: 374px;
     border-radius: 45px;
     display: flex;
@@ -196,7 +196,7 @@ const PasswordIcon = styled.img`
     margin-right: 2px;
 `;
 
-const Login = ({ loginUrl, onLogin, theme = 'dark' }) => {
+const Login = ({ loginUrl, onLogin, width = 450, theme = 'dark' }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -206,7 +206,7 @@ const Login = ({ loginUrl, onLogin, theme = 'dark' }) => {
     };
 
     return (
-        <Wrapper>
+        <Wrapper width={width}>
             <WrapperBorder theme={theme} />
             <WrapperBackground theme={theme}>
                 <Container>

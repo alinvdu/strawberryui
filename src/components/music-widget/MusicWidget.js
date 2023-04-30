@@ -104,6 +104,8 @@ const BottomSection = styled.div`
 	display: flex;
 	padding: 0px 2px 2px 2px;
 	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
 `;
 
 const BottomSectionBg = styled.div`
@@ -120,6 +122,7 @@ const BottomSectionBg = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	width: 100%;
 `;
 
 const BottomSectionBorder = styled.div`

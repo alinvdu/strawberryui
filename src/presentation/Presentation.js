@@ -40,6 +40,8 @@ const Container = styled.div`
     background: ${({ theme }) => theme === 'dark' ? `radial-gradient(98.36% 98.36% at 100% -1.24%, rgba(49, 59, 71, 0.88) 0%, rgba(88, 101, 115, 0.39) 25.13%, rgba(54, 63, 72, 0.49) 38.54%, rgba(30, 39, 50, 0.76) 53.16%, rgba(34, 43, 53, 0.29) 72.92%, rgba(27, 36, 44, 0.78) 82.63%, rgba(21, 29, 35, 0.42) 100%), url(${presentationBg})` :
         `radial-gradient(98.36% 98.36% at 100% -1.24%, rgba(108, 156, 216, 0.78) 0%, rgba(210, 218, 227, 0.39) 25.13%, rgba(214, 217, 220, 0.49) 38.54%, rgba(189, 208, 228, 0.76) 53.16%, rgba(156, 181, 209, 0.29) 72.92%, rgba(186, 202, 218, 0.78) 82.63%, rgba(166, 211, 244, 0.42) 100%), url('${presentationBgWhite}');`};
     background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-color: ${({ theme }) => theme === 'dark' ? `#0b1118` : `#bed3e3`};
     mix-blend-mode: normal;
     box-shadow: -14px 14px 20px 8px rgba(0, 0, 0, 0.49);
     border-radius: 30px;
@@ -527,6 +529,8 @@ const ColumnItem = styled.div`
 
 const THREE_COLUMNS_THRESHOLD = 1213;
 
+const ONE_COLUMN_THRESHOLD = 500
+
 const renderMusicWidget = (theme) => (
     <MusicWidget
         author="David Bowie"
@@ -574,22 +578,23 @@ const renderPaginationAndTextField = (theme) => (
     </ComponentWrapper>
 );
 
-const renderLoginPage = (theme) => (
+const renderLoginPage = (theme, width) => (
     <LoginPage
         url='localhost'
         onLogin={() => {
         }}
         theme={theme}
+        width={width}
     />
 );
 
-const renderCalendarAndOthers = (theme) => (
+const renderCalendarAndOthers = (theme, showOthers) => (
     <div style={{
         display: 'flex',
     }}>
         <Calendar theme={theme} />
         <div style={{
-            display: 'flex',
+            display: showOthers ? 'flex' : 'none',
             flexDirection: 'column',
             marginLeft: '20px'
         }}>
@@ -631,6 +636,10 @@ const ComponentList = ({ theme }) => {
         };
     }, []);
 
+    const smallerThanOneColumn = componentListRef.current && componentListRef.current.offsetWidth < ONE_COLUMN_THRESHOLD;
+    const loginPageWidth = smallerThanOneColumn ? 350 : 450;
+
+
     if (componentListRef.current && componentListRef.current.offsetWidth < THREE_COLUMNS_THRESHOLD) {
         return (
             <ComponentListWrapper ref={componentListRef}>
@@ -651,10 +660,10 @@ const ComponentList = ({ theme }) => {
                 </Column>
                 <Column>
                     <ColumnItem>
-                        {renderLoginPage(theme)}
+                        {renderLoginPage(theme, loginPageWidth)}
                     </ColumnItem>
                     <ColumnItem>
-                        {renderCalendarAndOthers(theme)}
+                        {renderCalendarAndOthers(theme, !smallerThanOneColumn)}
                     </ColumnItem>
                     <ColumnItem>
                         <TimeWidget theme={theme} />
@@ -676,10 +685,10 @@ const ComponentList = ({ theme }) => {
             </Column>
             <Column>
                 <ColumnItem>
-                    {renderLoginPage(theme)}
+                    {renderLoginPage(theme, loginPageWidth)}
                 </ColumnItem>
                 <ColumnItem>
-                    {renderCalendarAndOthers(theme)}
+                    {renderCalendarAndOthers(theme, !smallerThanOneColumn)}
                 </ColumnItem>
             </Column>
             <Column>
@@ -847,7 +856,7 @@ const Prompt = ({ description, title, theme }) => {
                             }} onMouseLeave={() => {
                                 setShowExpandTooltip(false);
                             }} />}
-                        {showExpandTooltip ? <Tooltip>{expandButtonTooltipText}</Tooltip> : null}
+                        {showExpandTooltip ? <Tooltip theme={theme}>{expandButtonTooltipText}</Tooltip> : null}
                     </ExpandButtonWrapper> : null}
                 <CopyButtonWrapper onMouseEnter={() => {
                     setShowTooltip(true);
@@ -871,7 +880,7 @@ const Prompt = ({ description, title, theme }) => {
                             });
                         }} fill={theme === 'dark' ? "rgba(38, 209, 220, 0.99)" : "#126065"} /> :
                         <CheckButton fill={theme === 'dark' ? "rgba(38, 209, 220, 0.99)" : "#126065"} marginTop={5} />}
-                    {showTooltip ? <Tooltip>{tooltipText}</Tooltip> : null}
+                    {showTooltip ? <Tooltip theme={theme}>{tooltipText}</Tooltip> : null}
                 </CopyButtonWrapper>
             </ButtonsWrapper>
         </PromptWrapper>
