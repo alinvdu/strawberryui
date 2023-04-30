@@ -5,6 +5,7 @@ import PrimaryButton, { SIZER_VARIANTS, VARIANTS } from '../buttons/PrimaryButto
 import addIconSrc from "./AddIcon.png";
 import strawberryDec from "./strawberry_decoration.png";
 import toDoListBackground from "./toDoListBg.jpg";
+import toDoListBackgroundWhite from "./strawberry-bg-white.jpg";
 
 const Wrapper = styled.div`
     position: relative;
@@ -25,9 +26,10 @@ const WrapperBackground = styled.div`
     width: 100%;
     height: 100%;
     border-radius: 110px;
-    background:
-        linear-gradient(180deg, #124562 0%, #0B2437 15.71%, #061F2E 89.74%, #011020 100%),
-        linear-gradient(180deg, #33839A 0%, rgba(24, 47, 54, 0.765267) 36.22%, rgba(18, 58, 69, 0.62) 74.36%, rgba(0, 0, 0, 0) 100%);
+    background: ${({ theme }) => theme === 'dark' ?
+        `linear-gradient(180deg, #124562 0%, #0B2437 15.71%, #061F2E 89.74%, #011020 100%),
+        linear-gradient(180deg, #33839A 0%, rgba(24, 47, 54, 0.765267) 36.22%, rgba(18, 58, 69, 0.62) 74.36%, rgba(0, 0, 0, 0) 100%)` :
+        `linear-gradient(180deg, #E9F6FC 0%, #A3C6D8 15.71%, #A3C7D9 89.74%, #A3C7D9 100%)`};
     z-index: 2;
 `;
 
@@ -36,7 +38,8 @@ const WrapperBorder = styled.div`
     border-radius: 110px;
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, #33839A 0%, rgba(24, 47, 54, 0.765267) 36.22%, rgba(18, 58, 69, 0.62) 74.36%, rgba(0, 0, 0, 0) 100%);
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(180deg, #33839A 0%, rgba(24, 47, 54, 0.765267) 36.22%, rgba(18, 58, 69, 0.62) 74.36%, rgba(0, 0, 0, 0) 100%)` :
+        `linear-gradient(180deg, #ABE9FB 0%, rgba(121, 181, 198, 0.765267) 36.22%, rgba(109, 174, 193, 0.62) 74.36%, rgba(90, 188, 216, 0) 100%)`};
     z-index: 1;
 `;
 
@@ -48,12 +51,14 @@ const Container = styled.div`
     background-size: cover;
     position: relative;
 
-    background: linear-gradient(181deg,rgba(17,51,75,1) 0%,rgba(7,27,50,1) 30.04%,rgba(0,11,23,0.75) 57.04%,rgba(1,16,32,0) 89.5%), url('${toDoListBackground}');
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(181deg,rgba(17,51,75,1) 0%,rgba(7,27,50,1) 30.04%,rgba(0,11,23,0.75) 57.04%,rgba(1,16,32,0) 89.5%), url('${toDoListBackground}')` :
+        `linear-gradient(180deg, rgba(212, 235, 244, 0.75) 0%, rgba(168, 202, 219, 0.75) 51.04%, rgba(167, 201, 219, 0.5025) 87.5%), url('${toDoListBackgroundWhite}')`};
     border-radius: 110px;
 `;
 
 const Strawberry = styled.img`
     margin-top: -30px;
+    ${({ theme }) => theme !== 'dark' ? `opacity: 0.65;` : ``}
 `;
 
 const TodoListWrapper = styled.div`
@@ -68,33 +73,33 @@ const TodoListWrapper = styled.div`
     }
 
     ::-webkit-scrollbar-track {
-        background-color: rgba(6, 28, 46, 1);
+        background-color: ${({ theme }) => theme === 'dark' ? `rgba(6, 28, 46, 1)` : `rgba(160, 191, 203, 0.75)`};
     }
 
     ::-webkit-scrollbar-thumb {
-        background: rgba(25, 66, 102, 1);
+        background: ${({ theme }) => theme === 'dark' ? `rgba(25, 66, 102, 1)` : `rgba(212, 235, 244, 0.75)`};
     }
 
     ::-webkit-scrollbar-thumb:hover {
-        background: rgba(10, 70, 121, 1);
+        background: rgba(150, 215, 241, 0.75);
     }
 `;
 
 const TodoListItem = styled.div`
   display: flex;
   align-items: center;
-  background-color: ${({ index }) =>
-    `rgba(${Math.max(6 - index * 2, 0)}, ${Math.max(25 - index * 5, 0)}, ${Math.max(
+  background-color: ${({ index, theme }) =>
+    theme === 'dark' ? `rgba(${Math.max(6 - index * 2, 0)}, ${Math.max(25 - index * 5, 0)}, ${Math.max(
       41 - index * 7,
       0
-    )}, 1)`};
+    )}, 1)` : `rgba(${Math.max(189 - index * 2, 0)}, ${Math.max(219 - index * 7, 0)}, ${Math.max(228 - index * 14, 0)}, 1)`};
   width: 269px;
   height: 45px;
   margin-bottom: 5px;
   padding: 8px;
   box-sizing: border-box;
-  color: white;
-  font-weight: 300;
+  color: ${({ theme }) => theme === 'dark' ? 'white' : '#126065'};
+  font-weight: ${({ theme }) => theme === 'dark' ? 300 : 400};
   font-size: 15px;
   border-radius: 5px;
 `;
@@ -148,7 +153,7 @@ const AddBorderShapedBackground = styled.div`
     position: absolute;
     width: 95px;
     height: 95px;
-    background: linear-gradient(180deg, #041927 0%, #011C2E 100%);
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(180deg, #041927 0%, #011C2E 100%)` : `linear-gradient(180deg, #AEE2EE 0%, #82BAD1 100%);`};
     border-radius: 95px;
 `;
 
@@ -159,7 +164,7 @@ const AddBackground = styled.div`
     width: 83px;
     height: 83px;
     border-radius: 83px;
-    background: radial-gradient(89.16% 89.16% at 50% 50.6%, #00080F 0%, #021621 100%);
+    background: ${({ theme }) => theme === 'dark' ? `radial-gradient(89.16% 89.16% at 50% 50.6%, #00080F 0%, #021621 100%)` : `radial-gradient(89.16% 89.16% at 50% 50.6%, #A2DDFF 0%, #477A97 100%);`};
 `;
 
 const StyledCloseButtonWrapper = styled.div`
@@ -193,7 +198,7 @@ const StyledCheckbox = styled.input`
     position: relative;
     appearance: none; /* remove default checkbox styling */
     -webkit-appearance: none;
-    background-color: rgba(7, 32, 53, 1);
+    background-color: ${({ theme }) => theme === 'dark' ? `rgba(7, 32, 53, 1)` : `rgba(196, 219, 224, 1)`};
     width: 18px;
     height: 18px;
     margin: 0px;
@@ -211,7 +216,7 @@ const StyledCheckbox = styled.input`
     }
 `;
 
-const TodoList = ({ items }) => {
+const TodoList = ({ items, theme = 'dark' }) => {
     const [todos, setTodos] = useState(items || []);
     const [newTodo, setNewTodo] = useState('');
 
@@ -239,21 +244,21 @@ const TodoList = ({ items }) => {
 
     return (
         <Wrapper>
-            <WrapperBorder />
-            <WrapperBackground>
-                <Container>
-                    <Strawberry src={strawberryDec} alt="strawberry" />
-                    <TodoListWrapper>
+            <WrapperBorder theme={theme} />
+            <WrapperBackground theme={theme}>
+                <Container theme={theme}>
+                    <Strawberry theme={theme} src={strawberryDec} alt="strawberry" />
+                    <TodoListWrapper theme={theme}>
                         {todos.map((todo, index) => (
-                            <TodoListItem key={index} index={index}>
+                            <TodoListItem theme={theme} key={index} index={index}>
                                 <StyledContentWrapper>
                                     <StyledCheckboxWrapper>
-                                        <StyledCheckboxWrapperBorder />
-                                        <StyledCheckbox type="checkbox" checked={todo.done} onChange={() => handleCheckTodo(index)} />
+                                        <StyledCheckboxWrapperBorder theme={theme} />
+                                        <StyledCheckbox theme={theme} type="checkbox" checked={todo.done} onChange={() => handleCheckTodo(index)} />
                                     </StyledCheckboxWrapper>
                                     <TodoListItemText done={todo.done}>{todo.description}</TodoListItemText>
                                 </StyledContentWrapper>
-                                <DeleteButton onClick={() => handleDeleteTodo(index)}>X</DeleteButton>
+                                <DeleteButton theme={theme} onClick={() => handleDeleteTodo(index)}>X</DeleteButton>
                             </TodoListItem>
                         ))}
                     </TodoListWrapper>
@@ -262,17 +267,19 @@ const TodoList = ({ items }) => {
                             onChange={(value) => setNewTodo(value)}
                             placeholder="Enter a new todo"
                             controlledValue={newTodo}
+                            theme={theme}
                         />
                     </StyledTextFieldWrapper>
                     <StyledButtonsWrapper>
                         <StyledAddButtonWrapper>
-                            <AddBorderShapedBackground />
-                            <AddBackground />
+                            <AddBorderShapedBackground theme={theme} />
+                            <AddBackground theme={theme} />
                             <PrimaryButton
                                 onClick={handleAddTodo}
                                 sizeVariant={SIZER_VARIANTS.SMALL}
                                 icon={<StyledAddButton src={addIconSrc} />}
                                 variant={VARIANTS.BLUE}
+                                theme={theme}
                             />
                         </StyledAddButtonWrapper>
                         <StyledCloseButtonWrapper>
@@ -283,6 +290,7 @@ const TodoList = ({ items }) => {
                                 sizeVariant={SIZER_VARIANTS.SMALL}
                                 icon={<DeleteButton>X</DeleteButton>}
                                 variant={VARIANTS.BLUE}
+                                theme={theme}
                             />
                         </StyledCloseButtonWrapper>
                     </StyledButtonsWrapper>

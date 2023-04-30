@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import strawberryBg from "./strawberry-bg.jpg";
 import strawberryDec from "./strawberry-dec.png";
+import strawberryBgWhite from "./strawberry-bg-white.jpg";
 import userIcon from "./user-icon.png";
+import userIconWhite from "./user-icon-white.png";
+import passwordIconWhite from "./password-icon-white.png";
 import passwordIcon from "./password-icon.png";
 import TextField from "../text-field/TextField";
 
@@ -22,17 +25,19 @@ const WrapperBackground = styled.div`
     flex: 1;
     border-radius: 45px;
     box-sizing: border-box;
-    background: linear-gradient(178.89deg, #113750 1.5%, #081E2E 25.42%, #010D1A 37.75%, rgba(1, 16, 30, 0.91) 56.66%, #041B31 99.08%);
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(178.89deg, #113750 1.5%, #081E2E 25.42%, #010D1A 37.75%, rgba(1, 16, 30, 0.91) 56.66%, #041B31 99.08%)`:
+        `linear-gradient(178.89deg, #C0D1DC 1.5%, #B0CCE1 25.42%, #EBF0F4 37.75%, rgba(163, 192, 220, 0.91) 56.66%, #C5DCF1 99.08%)`};
 `;
 
 const WrapperBorder = styled.div`
     position: absolute;
-        border-radius: 45px;
-        top: 0px;
-        left: 0px;
-        right: 0px;
-        bottom: 0px;
-    background: radial-gradient(93.11% 209.5% at 2.89% 5.67%, rgba(38, 209, 220, 0.11) 0%, rgba(134, 248, 255, 0.34) 100%);
+    border-radius: 45px;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: ${({ theme }) => theme === 'dark' ? 'radial-gradient(93.11% 209.5% at 2.89% 5.67%, rgba(38, 209, 220, 0.11) 0%, rgba(134, 248, 255, 0.34) 100%)' :
+        `radial-gradient(93.11% 209.5% at 2.89% 5.67%, rgba(96, 213, 220, 0.11) 0%, rgba(118, 244, 252, 0.34) 100%)`};
 `;
 
 const Container = styled.div`
@@ -49,7 +54,8 @@ const ContainerBg = styled.div`
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
-    background: linear-gradient(178.89deg, #113750 1.5%, #081E2E 25.42%, #010D1A 37.75%, rgba(1, 16, 30, 0.91) 56.66%, rgba(1, 18, 34, 0) 99.08%), url('${strawberryBg}');
+    background: ${({ theme }) => theme ==='dark' ? `linear-gradient(178.89deg, #113750 1.5%, #081E2E 25.42%, #010D1A 37.75%, rgba(1, 16, 30, 0.91) 56.66%, rgba(1, 18, 34, 0) 99.08%), url('${strawberryBg}')` :
+        `linear-gradient(178.89deg, #DAE9F3 1.5%, #B8D2E6 25.42%, #AEC7E2 37.75%, rgba(154, 182, 209, 0.91) 56.66%, rgba(134, 159, 182, 0.14253) 92.95%, rgba(135, 178, 217, 0) 99.08%), url('${strawberryBgWhite}')`};
     border-radius: 45px;
     box-sizing: border-box;
     padding: 5px;
@@ -64,7 +70,8 @@ const ContainerBorder = styled.div`
     left: 0px;
     right: 0px;
     bottom: 0px;
-    background: linear-gradient(180deg, #3E687E 0%, #071C27 51.04%, #135468 100%);
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(180deg, #3E687E 0%, #071C27 51.04%, #135468 100%)` :
+        `linear-gradient(180deg, #AEDDF7 0%, #79A3BA 51.04%, #69D5F8 100%);`};
     content: '';
 `;
 
@@ -73,13 +80,13 @@ const Header = styled.div`
     align-items: center;
     justify-content: flex-start;
     width: 100%;
+    color: ${({ theme }) => theme === 'dark' ? '#FFFFFF' : '#126065'};
 `;
 
 const LoginText = styled.h1`
-    color: white;
     font-size: 24px;
     margin-left: -5px;
-    font-weight: 200;
+    font-weight: 300;
 `;
 
 const Form = styled.form`
@@ -117,7 +124,8 @@ const LoginButtonBorder = styled.div`
     left: 0px;
     right: 0px;
     bottom: 0px;
-    background: linear-gradient(90deg, #246A89 0%, #0F2630 49.23%, #246A89 100%);
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(90deg, #246A89 0%, #0F2630 49.23%, #246A89 100%)` :
+        `linear-gradient(90deg, #A9D1E3 0%, #8BB1C1 49.23%, #B3DDF0 100%)`};
     border-radius: 30px;
 `;
 
@@ -128,11 +136,11 @@ const LoginButtonBg = styled.div`
     height: 43px;
     margin: 1px;
 
-    background: linear-gradient(270deg, #0A4355 0%, #03141E 55.73%, #0E506C 100%);
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(270deg, #0A4355 0%, #03141E 55.73%, #0E506C 100%)` :
+        `linear-gradient(270deg, #8ACADE 0%, #93B0C0 55.73%, #B3DAEB 100%)`};
     border-radius: 30px;
     padding: 3px 5px 5px 5px;
     box-sizing: border-box;
-
 `;
 
 const LoginButtonContainerBg = styled.div`
@@ -140,8 +148,8 @@ const LoginButtonContainerBg = styled.div`
     margin: 1px;
     border-radius: 30px;
     flex: 1;
-    background: linear-gradient(91.1deg, #24B2D1 16.35%, #2A6E94 100.25%),
-        linear-gradient(90deg, rgba(91, 220, 228, 0.99) 0%, rgba(47, 149, 155, 0.99) 100%);
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(91.1deg, #24B2D1 16.35%, #2A6E94 100.25%), linear-gradient(90deg, rgba(91, 220, 228, 0.99) 0%, rgba(47, 149, 155, 0.99) 100%)` :
+        `linear-gradient(91.1deg, #5AC4DB 16.35%, #50798F 100.25%);`};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -150,7 +158,7 @@ const LoginButtonContainerBg = styled.div`
     span {
         font-family: 'Source Sans Pro', sans-serif;
         font-size: 15px;
-        font-weight: 200;
+        font-weight: 300;
     }
 `;
 
@@ -161,18 +169,19 @@ const LoginButtonContainerBorder = styled.div`
     left: 5px;
     right: 5px;
     bottom: 5px;
-    background: linear-gradient(90deg, rgba(91, 220, 228, 0.99) 0%, rgba(47, 149, 155, 0.99) 100%);
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(90deg, rgba(91, 220, 228, 0.99) 0%, rgba(47, 149, 155, 0.99) 100%)` :
+        `linear-gradient(90deg, rgba(91, 220, 228, 0.99) 0%, rgba(47, 149, 155, 0.99) 100%);`};
 `;
 
 const ForgotPassword = styled.a`
-  color: white;
+  color: ${({ theme }) => theme === 'dark' ? '#FFFFFF' : '#126065'};
   font-size: 15px;
   text-align: center;
   text-decoration: none;
   width: 100%;
   text-align: right;
   margin: 10px 10px 20px 0;
-  font-weight: 300;
+  font-weight: ${({ theme }) => theme === 'dark' ? 300 : 400};
 `;
 
 const StyledDecoration = styled.img`
@@ -187,56 +196,57 @@ const PasswordIcon = styled.img`
     margin-right: 2px;
 `;
 
-const Login = ({ loginUrl, onLogin }) => {
+const Login = ({ loginUrl, onLogin, theme = 'dark' }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // perform login logic here
         onLogin();
     };
 
     return (
         <Wrapper>
-            <WrapperBorder />
-            <WrapperBackground>
+            <WrapperBorder theme={theme} />
+            <WrapperBackground theme={theme}>
                 <Container>
-                    <ContainerBorder />
-                    <ContainerBg>
-                        <Header>
+                    <ContainerBorder theme={theme} />
+                    <ContainerBg theme={theme}>
+                        <Header theme={theme}>
                             <StyledDecoration src={strawberryDec} alt="Strawberry" />
                             <LoginText>Login</LoginText>
                         </Header>
                         <Form onSubmit={handleSubmit}>
                             <Row>
-                                <UserIcon src={userIcon} />
+                                <UserIcon src={theme === 'dark' ? userIcon : userIconWhite} />
                                 <TextField
                                     onChange={(value) => setUsername(value)}
                                     placeholder="Username"
                                     controlledValue={username}
+                                    theme={theme}
                                 />
                             </Row>
                             <Row>
-                                <PasswordIcon src={passwordIcon} />
+                                <PasswordIcon src={theme === 'dark' ? passwordIcon : passwordIconWhite} />
                                 <TextField
                                     onChange={(value) => setPassword(value)}
                                     placeholder="Password"
                                     controlledValue={password}
                                     isPassword
+                                    theme={theme}
                                 />
                             </Row>
                             <LoginButtonWrapper type="submit">
-                                <LoginButtonBorder />
-                                <LoginButtonBg>
-                                    <LoginButtonContainerBorder />
-                                    <LoginButtonContainerBg>
+                                <LoginButtonBorder theme={theme} />
+                                <LoginButtonBg theme={theme}>
+                                    <LoginButtonContainerBorder theme={theme} />
+                                    <LoginButtonContainerBg theme={theme}>
                                         <span>Login</span>
                                     </LoginButtonContainerBg>
                                 </LoginButtonBg>
                             </LoginButtonWrapper>
                         </Form>
-                        <ForgotPassword href="#">Forgot Password?</ForgotPassword>
+                        <ForgotPassword theme={theme} href="#">Forgot Password?</ForgotPassword>
                     </ContainerBg>
                 </Container>
             </WrapperBackground>

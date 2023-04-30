@@ -23,8 +23,16 @@ export default {
     ]
 };
 
-export const TextFieldStory = {
+export const TextFieldDark = {
   args: {
-    onSubmit: value => alert(value)
+    onSubmit: value => alert(value),
+    theme: 'dark'
+  },
+};
+
+export const TextFieldLight = {
+  args: {
+    onSubmit: value => alert(value),
+    theme: 'light'
   },
 };

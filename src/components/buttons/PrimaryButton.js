@@ -11,18 +11,18 @@ export const SIZER_VARIANTS = {
     SMALL: "small"
 };
 
-const Button = ({ icon, children, variant = VARIANTS.RED, sizeVariant = SIZER_VARIANTS.NORMAL, ...rest }) => {
+const Button = ({ icon, children, variant = VARIANTS.RED, theme="dark", sizeVariant = SIZER_VARIANTS.NORMAL, ...rest }) => {
     if (sizeVariant === SIZER_VARIANTS.NORMAL) {
         return (
             <StyledButton {...rest}>
-                <BackgroundElementBorder />
-                <BackgroundElement />
-                {variant === VARIANTS.RED ? <CircleElement /> : <CircleElementBlue />}
+                <BackgroundElementBorder theme={theme} />
+                <BackgroundElement theme={theme} />
+                {variant === VARIANTS.RED ? <CircleElement theme={theme} /> : <CircleElementBlue theme={theme} />}
                 {variant === VARIANTS.RED ?
-                    <InnerElement>
+                    <InnerElement theme={theme}>
                         {icon}
                     </InnerElement> :
-                    <InnerElementBlue>
+                    <InnerElementBlue theme={theme}>
                         {icon}
                     </InnerElementBlue>
                 }
@@ -32,14 +32,14 @@ const Button = ({ icon, children, variant = VARIANTS.RED, sizeVariant = SIZER_VA
 
     return (
         <StyledButtonSmall {...rest}>
-            <BackgroundElementBorderSmall />
-            <BackgroundElementSmall />
-            {variant === VARIANTS.RED ? <CircleElementSmall /> : <CircleElementBlueSmall />}
+            <BackgroundElementBorderSmall theme={theme} />
+            <BackgroundElementSmall theme={theme} />
+            {variant === VARIANTS.RED ? <CircleElementSmall theme={theme} /> : <CircleElementBlueSmall theme={theme} />}
             {variant === VARIANTS.RED ?
-                <InnerElementSmall>
+                <InnerElementSmall theme={theme}>
                     {icon}
                 </InnerElementSmall> :
-                <InnerElementBlueSmall>
+                <InnerElementBlueSmall theme={theme}>
                     {icon}
                 </InnerElementBlueSmall>
             }
@@ -75,7 +75,7 @@ const CommonBackgroundElement = css`
     width: 53px;
     height: 53px;
     box-sizing: border-box;
-    background: linear-gradient(180deg, #06151C 0%, #08121A 100%);
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(180deg, #06151C 0%, #08121A 100%)` : `linear-gradient(138.87deg, #E5E8ED 13.91%, #BACDDD 86.52%)`};
     margin: 1px;
 `;
 
@@ -97,7 +97,8 @@ const CommonBackgroundElementBorder = css`
     position: absolute;
     top: 0px; bottom: 0px;
     left: 0px; right: 0px;
-    background: linear-gradient(180deg, #424145 0%, rgba(0, 0, 0, 0) 72%);
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(180deg, #424145 0%, rgba(0, 0, 0, 0) 72%)`
+        : `linear-gradient(180deg, #AF94FF 0%, rgba(79, 39, 200, 0) 100%);`};
 `;
 
 const BackgroundElementBorder = styled.div`
@@ -134,8 +135,10 @@ const CircleElementBlue = styled.div`
     left: 4px;
     border-radius: 46px;
     box-sizing: border-box;
-    background: conic-gradient(from 180deg at 50% 50%, #173B4B 0deg, #155683 47.94deg, #6A2830 90.36deg, #2F689F 142.76deg, #15D0F5 211.68deg, #1D3646 310.97deg, #13303D 358.44deg, #163B4A 360deg);
-    box-shadow: 0px 0px 2px 0px rgba(38, 209, 220, 0.51);
+    background: ${({ theme }) => theme === 'dark' ?
+        `conic-gradient(from 180deg at 50% 50%, #173B4B 0deg, #155683 47.94deg, #6A2830 90.36deg, #2F689F 142.76deg, #15D0F5 211.68deg, #1D3646 310.97deg, #13303D 358.44deg, #163B4A 360deg)` :
+        `conic-gradient(from 180deg at 50% 50%,#8ddcff 17deg,#64a98c 47.94deg,#ffc7ce 90.36deg,#487fb5 142.76deg,#15D0F5 211.68deg,rgba(134,224,242,1) 283deg,rgba(134,224,242,1) 360deg,#28c1ff 356deg)`};
+    box-shadow: 0px 0px 2px 2px rgb(17 202 211 / 38%);
 `;
 
 const CircleElementSmall = styled.div`
@@ -157,8 +160,10 @@ const CircleElementBlueSmall = styled.div`
     top: 3px;
     left: 3px;
     box-sizing: border-box;
-    background: conic-gradient(from 180deg at 50% 50%, #173B4B 0deg, #155683 47.94deg, #6A2830 90.36deg, #2F689F 142.76deg, #15D0F5 211.68deg, #1D3646 310.97deg, #13303D 358.44deg, #163B4A 360deg);
-    box-shadow: 0px 0px 2px 0px rgba(38, 209, 220, 0.51);
+    background: ${({ theme }) => theme === 'dark' ?
+        `conic-gradient(from 180deg at 50% 50%, #173B4B 0deg, #155683 47.94deg, #6A2830 90.36deg, #2F689F 142.76deg, #15D0F5 211.68deg, #1D3646 310.97deg, #13303D 358.44deg, #163B4A 360deg)` :
+        `conic-gradient(from 180deg at 50% 50%,#8ddcff 17deg,#64a98c 47.94deg,#ffc7ce 90.36deg,#487fb5 142.76deg,#15D0F5 211.68deg,rgba(134,224,242,1) 283deg,rgba(134,224,242,1) 360deg,#28c1ff 356deg)`};
+    box-shadow: 0px 0px 2px 2px rgb(17 202 211 / 38%);
 `;
 
 const commonInnerElements = css`
@@ -166,6 +171,9 @@ const commonInnerElements = css`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(138.87deg, #151A24 13.91%, #0C151D 86.52%)`
+        : `linear-gradient(138.87deg, #E5E8ED 13.91%, #BACDDD 86.52%);`};
 `
 
 const InnerElement = styled.div`
@@ -175,7 +183,6 @@ const InnerElement = styled.div`
     top: 6px;
     left: 6px;
     border-radius: 44px;
-    background: linear-gradient(138.87deg, #151A24 13.91%, #0C151D 86.52%);
     box-shadow: inset 0px 0px 5px #FC325D;
 `;
 
@@ -186,7 +193,6 @@ const InnerElementBlue = styled.div`
     top: 6px;
     left: 6px;
     border-radius: 44px;
-    background: linear-gradient(138.87deg, #151A24 13.91%, #0C151D 86.52%);
 `;
 
 const InnerElementSmall = styled.div`
@@ -196,7 +202,6 @@ const InnerElementSmall = styled.div`
     border-radius: 26px;
     top: 4px;
     left: 4px;
-    background: linear-gradient(138.87deg, #151A24 13.91%, #0C151D 86.52%);
     box-shadow: inset 0px 0px 5px #FC325D;
 `;
 
@@ -207,7 +212,8 @@ const InnerElementBlueSmall = styled.div`
     border-radius: 22px;
     top: 5px;
     left: 5px;
-    background: linear-gradient(138.87deg, #151A24 13.91%, #0C151D 86.52%);
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(138.87deg, #151A24 13.91%, #0C151D 86.52%)`
+        : `linear-gradient(138.87deg, #E5E8ED 13.91%, #BACDDD 86.52%);`};
 `;
 
 export const Rectangle = styled.div`
@@ -215,7 +221,7 @@ export const Rectangle = styled.div`
     height: 11px;
 
     background: #FB325C;
-    box-shadow: 0px 0px 4px 1px #FF0538;
+    box-shadow: 0px 0px 3px 1px #FF0538;
 
 `
 

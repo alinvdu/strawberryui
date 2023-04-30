@@ -10,17 +10,31 @@ export default {
             {
                 name: 'black',
                 value: '#1B1C1D',
-            },
+            }, {
+              name: 'white',
+              value: 'white',
+            }
             ],
         },
     }
 };
 
-export const LoginPageStory = {
+export const LoginPageDark = {
   args: {
     url: 'localhost',
     onLogin: () => {
         alert("login clicked")
-    }
+    },
+    theme: 'dark'
+  },
+};
+
+export const LoginPageLight = {
+  args: {
+    url: 'localhost',
+    onLogin: () => {
+        alert("login clicked")
+    },
+    theme: 'light'
   },
 };

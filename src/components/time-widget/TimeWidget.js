@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import strawberryBg from "./strawberry-bg.jpg";
+import strawberryBgWhite from "./strawberry-bg-white.jpg";
 import strawberryDec from "./strawberries.png";
 
 export const Container = styled.div`
@@ -8,14 +9,15 @@ export const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    background: linear-gradient(179.71deg, #1D4264 0.3%, rgba(15, 33, 54, 0.95) 42.79%, rgba(6, 21, 44, 0.57) 83.21%, rgba(6, 13, 35, 0) 99.79%), url('${strawberryBg}');
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(179.71deg, #1D4264 0.3%, rgba(15, 33, 54, 0.95) 42.79%, rgba(6, 21, 44, 0.57) 83.21%, rgba(6, 13, 35, 0) 99.79%), url('${strawberryBg}')` :
+        `linear-gradient(179.71deg, #B8DAE1 0.3%, rgba(153, 184, 207, 0.95) 34.76%, rgba(241, 244, 249, 0.62) 72.92%, rgba(226, 232, 252, 0.33) 99.79%), url('${strawberryBgWhite}')`};
     border-radius: 30px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     padding: 0 20px 20px 20px;
     width: 350px;
     height: 540px;
     box-sizing: border-box;
-    border: 1px solid #10547A;
+    border: 1px solid ${({ theme }) => theme === 'dark' ? `#10547A` : `#6AA3B5`};
     border-radius: 35px;
 
 `;
@@ -27,18 +29,20 @@ const TitleContainer = styled.div`
     box-sizing: border-box;
     width: 319px;
     min-height: 43px;
-    background: linear-gradient(218.12deg, #193855 9.5%, #11202C 78.02%);
-    border: 1px solid #215A6C;
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(218.12deg, #193855 9.5%, #11202C 78.02%)`:
+        `linear-gradient(218.12deg, #BAE5FA 9.5%, #99BBCC 78.02%);`};
+    border: 1px solid ${({ theme }) => theme === 'dark' ? `#215A6C` : `#88B9D3`};
     border-radius: 15px;
     margin-top: -1px;
     padding: 0 25px;
+
+    color: ${({ theme }) => theme === 'dark' ? `#fff` : `#126065`};
+    font-weight: ${({ theme }) => theme === 'dark' ? 300 : 400};
 `;
 
 export const Title = styled.div`
   font-size: 15px;
-  color: #fff;
   opacity: 0.65;
-  font-weight: 300;
 `;
 
 export const ListContainer = styled.div`
@@ -49,6 +53,9 @@ export const ListContainer = styled.div`
     justify-content: space-between;
     width: 100%;
     max-height: 280px;
+
+    color: ${({ theme }) => theme == 'dark' ? `#fff` : `#126065`};
+    font-weight: ${({ theme }) => theme == 'dark' ? 300 : 400};
 `;
 
 export const List = styled.ul`
@@ -76,8 +83,6 @@ export const ListItem = styled.li`
   width: 100%;
   height: 40px;
   text-align: center;
-  font-weight: 300;
-  color: #fff;
   cursor: pointer;
 
   &:hover {
@@ -98,8 +103,9 @@ export const SelectedContainer = styled.div`
     height: 60px;
     padding: 10px;
     box-sizing: border-box;
-    background: linear-gradient(180deg, #0C1B33 0%, #0A1A2E 100%);
-    border: 1px solid #112845;
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(180deg, #0C1B33 0%, #0A1A2E 100%)`
+        : `linear-gradient(0deg, #6A9CB1, #6A9CB1),linear-gradient(180deg, #AAC9DC 0%, #89ACC0 100%)`};
+    border: 1px solid ${({ theme }) => theme === 'dark' ? `#112845` : `rgba(106, 156, 177, 1)`};
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.34);
     border-radius: 8px;
     margin-top: -7px;
@@ -115,7 +121,7 @@ export const SelectedColumn = styled.div`
 
 export const SelectedValue = styled.div`
     font-size: 23px;
-    color: rgba(110, 190, 219, 1);
+    color: ${({ theme }) => theme === 'dark' ? `rgba(110, 190, 219, 1)` : `#126065`};
     text-shadow: 0px 0px 4px #00ECFB;
 `;
 
@@ -130,7 +136,7 @@ export const ListLine1 = styled.div`
     margin-top: -20px;
     width: 100%;
     height: 1px;
-    background-color: #00ECFB;
+    background-color: ${({ theme }) => theme === 'dark' ? `#00ECFB` : `#126065`};
     box-shadow: 0px 0px 4px #00ECFB;
     opacity: 0.85;
 `;
@@ -141,12 +147,12 @@ export const ListLine2 = styled.div`
     margin-top: 20px;
     width: 100%;
     height: 1px;
-    background-color: #00ECFB;
+    background-color: ${({ theme }) => theme === 'dark' ? `#00ECFB` : `#126065`};
     box-shadow: 0px 0px 4px #00ECFB;
     opacity: 0.85;
 `;
 
-const TimeWidget = () => {
+const TimeWidget = ({ theme = 'dark' }) => {
     const [hours, setHours] = useState(0);
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
@@ -250,8 +256,8 @@ const TimeWidget = () => {
     }, []);
 
     return (
-        <Container>
-            <TitleContainer>
+        <Container theme={theme}>
+            <TitleContainer theme={theme}>
                 <Title>Hours</Title>
                 <Title>Minutes</Title>
                 <Title>Seconds</Title>
@@ -259,18 +265,18 @@ const TimeWidget = () => {
             <ListContainer>
                 <StrawberryImage src={strawberryDec} alt="strawberry" />
             </ListContainer>
-            <SelectedContainer>
+            <SelectedContainer theme={theme}>
                 <SelectedColumn>
-                    <SelectedValue>{hours}</SelectedValue>
+                    <SelectedValue theme={theme}>{hours}</SelectedValue>
                 </SelectedColumn>
                 <SelectedColumn>
-                    <SelectedValue>{minutes}</SelectedValue>
+                    <SelectedValue theme={theme}>{minutes}</SelectedValue>
                 </SelectedColumn>
                 <SelectedColumn>
-                    <SelectedValue>{seconds}</SelectedValue>
+                    <SelectedValue theme={theme}>{seconds}</SelectedValue>
                 </SelectedColumn>
             </SelectedContainer>
-            <ListContainer>
+            <ListContainer theme={theme}>
                 <List ref={hoursRef}>
                     {Array.from({ length: 3 }).map((_, index) => <EmptyItem key={index} />)}
                     {Array.from({ length: 24 }).map((_, index) => (
@@ -307,8 +313,8 @@ const TimeWidget = () => {
                     ))}
                     {Array.from({ length: 3 }).map((_, index) => <EmptyItem key={index} />)}
                 </List>
-                <ListLine1 />
-                <ListLine2 />
+                <ListLine1 theme={theme} />
+                <ListLine2 theme={theme} />
             </ListContainer>
         </Container>
     );

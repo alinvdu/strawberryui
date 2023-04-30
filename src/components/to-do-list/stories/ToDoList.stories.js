@@ -10,26 +10,49 @@ export default {
         {
           name: 'black',
           value: '#1B1C1D',
-        },
+        }, {
+          name: 'white',
+          value: 'white',
+        }
       ],
     },
   }
 };
 
-export const ToDoListStory = {
+export const ToDoListLight = {
   args: {
     items: [{
-      description: 'Strawberry Fields Forever',
+      description: 'Visit Strawberry Fields in Central Park',
       done: false
     }, {
-      description: 'Lucy in the Sky with Diamonds',
+      description: 'Make strawberry jam',
       done: false
     }, {
-      description: 'Lucy in the Sky with Diamonds',
+      description: 'Host a Beatles-themed party',
       done: false
     }, {
-      description: 'Lucy in the Sky with Diamonds',
+      description: 'Take a trip to Liverpool',
       done: false
-    }]
+    }],
+    theme: 'light'
+  },
+};
+
+export const ToDoListDark = {
+  args: {
+    items: [{
+      description: 'Visit Strawberry Fields in Central Park',
+      done: false
+    }, {
+      description: 'Make strawberry jam',
+      done: false
+    }, {
+      description: 'Host a Beatles-themed party',
+      done: false
+    }, {
+      description: 'Take a trip to Liverpool',
+      done: false
+    }],
+    theme: 'dark'
   },
 };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { ArrowLeftFat, ArrowRightFat } from '../buttons/SecondaryButtonUtils';
-import { GreenDecorationLeft, GreenDecorationRight } from './PaginationUtils';
+import { GreenDecorationLeft, GreenDecorationRight, GreenDecorationRightLight, GreenDecorationLeftLight } from './PaginationUtils';
 
 const PaginationContainer = styled.div`
     position: relative;
@@ -12,8 +12,10 @@ const PaginationContainer = styled.div`
     height: 70px;
     border-radius: 30px;
     box-sizing: border-box;
-    background: radial-gradient(41.62% 128.57% at 50% 0%, rgba(36, 119, 168, 0.95) 0%, rgba(1, 24, 37, 0) 73.96%), linear-gradient(180deg, #0A2D42 0%, #001522 100%);
-    border: 1px solid #254550;
+    background: ${({ theme }) => theme === 'dark' ?
+      `radial-gradient(41.62% 128.57% at 50% 0%, rgba(36, 119, 168, 0.95) 0%, rgba(1, 24, 37, 0) 73.96%), linear-gradient(180deg, #0A2D42 0%, #001522 100%)` :
+      `radial-gradient(41.62% 128.57% at 50% 0%, rgba(151, 216, 254, 0.95) 0%, rgba(59, 143, 190, 0) 73.96%), linear-gradient(180deg, #ACE9FD 0%, #669FC2 100%)`};
+    border: 1px solid ${({ theme }) => theme === 'dark' ? '#254550' : '#7BDEFE'};
 `;
 
 const PageNumber = styled.button`
@@ -32,11 +34,11 @@ const PageNumber = styled.button`
     letter-spacing: ${({ isDots }) =>
         isDots ? '-1.2px' : 'normal'};
 
-    background: linear-gradient(180deg, #72DFEE 14.71%, #FFFFFF 32.54%, #5CC0CC 50%);
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(180deg, #72DFEE 14.71%, #FFFFFF 32.54%, #5CC0CC 50%)` : `linear-gradient(180deg, #126065 14.71%, #0B4D51 32.54%, #188087 50%);`};
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: 0px 0px 7px #FFFFFF;
+    text-shadow: ${({ theme }) => theme === 'dark' ? `0px 0px 7px #FFFFFF` : `0px 0px 4px rgba(11, 77, 81, 0.53)`};
     font-family: 'Source Sans Pro', sans-serif;
 
     &:hover {
@@ -52,8 +54,8 @@ const commonStyles = css`
     box-sizing: border-box;
     width: 63px;
     height: 70px;
-    background: #00121E;
-    border: 1px solid #16323A;
+    background: ${({ theme }) => theme === 'dark' ? `#00121E` : `#77B3DB`};
+    border: 1px solid ${({ theme }) => theme ==='dark' ? '#16323A' : '#8ADCFF'};
 `;
 
 const ArrowButtonLeft = styled.button`
@@ -89,7 +91,7 @@ const StyledRightGreenDecorationWrapper = styled.div`
     margin-top: -17px;
 `;
 
-const Pagination = ({ totalElements, elementsPerPage, onPageChange }) => {
+const Pagination = ({ totalElements, elementsPerPage, onPageChange, theme = 'dark' }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(totalElements / elementsPerPage);
 
@@ -129,13 +131,14 @@ const Pagination = ({ totalElements, elementsPerPage, onPageChange }) => {
 
     return pages.map((page, index) => {
       if (page === '...') {
-        return <PageNumber isDots key={index}>...</PageNumber>;
+        return <PageNumber theme={theme} isDots key={index}>...</PageNumber>;
       }
       return (
         <PageNumber
           key={index}
           isActive={currentPage === page}
           onClick={() => handleClick(page)}
+          theme={theme}
         >
           {page}
         </PageNumber>
@@ -158,21 +161,21 @@ const Pagination = ({ totalElements, elementsPerPage, onPageChange }) => {
   };
 
   return (
-    <PaginationContainer>
+    <PaginationContainer theme={theme}>
         <StyledLeftGreenDecorationWrapper>
-            <GreenDecorationLeft />
+            {theme === 'dark' ? <GreenDecorationLeft /> : <GreenDecorationLeftLight />}
         </StyledLeftGreenDecorationWrapper>
         <StyledRightGreenDecorationWrapper>
-            <GreenDecorationRight />
+            {theme === 'dark' ? <GreenDecorationRight /> : <GreenDecorationRightLight />}
         </StyledRightGreenDecorationWrapper>
-      <ArrowButtonLeft onClick={handlePrevClick}>
-        <ArrowLeftFat />
+      <ArrowButtonLeft theme={theme} onClick={handlePrevClick}>
+        <ArrowLeftFat theme={theme} />
       </ArrowButtonLeft>
       <StyledPagesContainer>
         {renderPages()}
       </StyledPagesContainer>
-      <ArrowButtonRight onClick={handleNextClick}>
-        <ArrowRightFat />
+      <ArrowButtonRight theme={theme} onClick={handleNextClick}>
+        <ArrowRightFat theme={theme} />
       </ArrowButtonRight>
     </PaginationContainer>
   );

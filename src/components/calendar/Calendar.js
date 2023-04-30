@@ -10,9 +10,11 @@ import { ArrowLeft, ArrowRight } from '../buttons/SecondaryButtonUtils';
  */
 const WidgetContainer = styled.div`
     position: relative;
-    background:
-        linear-gradient(221.07deg, #206D8E 5.96%, #0E405C 17.32%, #092F4A 27.37%, #04283C 36.3%, #012336 47.7%, #022539 56.93%, #052E44 74.64%, #0F414B 83.98%, #257091 95.67%);
-    border: 1px solid rgba(47, 122, 122, 1);
+    background: ${({ theme }) => theme === 'dark' ?
+        `linear-gradient(221.07deg, #206D8E 5.96%, #0E405C 17.32%, #092F4A 27.37%, #04283C 36.3%, #012336 47.7%, #022539 56.93%, #052E44 74.64%, #0F414B 83.98%, #257091 95.67%)`:
+        `linear-gradient(176.26deg, rgba(224, 242, 249, 0.5) 8.15%, rgba(199, 229, 249, 0.5) 29.44%), linear-gradient(221.07deg, #F9FDFF 5.96%, #BEDEEB 17.32%, #A9CCDA 27.37%, #7EAEC0 36.3%, #80ADBE 47.7%, #7CA3B3 56.93%, #8CB3C1 74.64%, #93C2CC 83.98%, #82AFC2 95.67%);
+`};
+    border: 1px solid ${({ theme }) => theme === 'dark' ? `rgba(47, 122, 122, 1)` : `rgba(141, 207, 207, 1)`};
     border-radius: 30px;
     width: 350px;
     height: 380px;
@@ -20,8 +22,11 @@ const WidgetContainer = styled.div`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    font-weight: ${({ theme }) => theme === 'dark' ? `300` : `400`};
 
-    &::after {
+    color: ${({ theme }) => theme === 'dark' ? 'white' : '#126065'};
+
+    ${({ theme}) => theme === 'dark' ? `&::after {
         position: absolute;
         content: '';
         top: -1px;
@@ -31,21 +36,19 @@ const WidgetContainer = styled.div`
         border-top-left-radius: 30px;
         border-top-right-radius: 30px;
         background: linear-gradient(176.26deg, rgba(47, 141, 170, 0.5) 8.15%, rgba(11, 40, 66, 0) 29.44%);
-    }
+    }` : ``};
 `;
 
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   padding-bottom: 20px;
-  color: white;
   z-index: 2;
   align-items: center;
 `;
 
 const MonthYear = styled.div`
   font-size: 21px;
-  font-weight: 300;
   margin-left: 5px;
 `;
 
@@ -53,8 +56,6 @@ const DaysOfWeek = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
-  color: white;
-  font-weight: 300;
   z-index: 2;
 `;
 
@@ -63,15 +64,13 @@ const DayOfMonth = styled.div`
     justify-content: center;
     align-items: center;
     height: 26px;
-    font-weight: 300;
     width: 26px;
     margin: 2px 0;
-    color: white;
     z-index: 2;
     cursor: pointer;
 
-    ${({ active }) => active ? `
-        border: 1px solid rgba(255, 255, 255, 0.75);
+    ${({ active, theme }) => active ? `
+        border: 1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.75)' : 'rgba(18, 96, 101, 1)'};
         border-radius: 50%;
     ` : 'border: 1px solid transparent;'};
 `;
@@ -98,7 +97,7 @@ const DecoratedWonkyStrawberryBg = styled.img`
     top: -1px;
     left: 50%;
     margin-left: -80px;
-    opacity: 0.75;
+    opacity: ${({ theme }) => theme === 'dark' ?  0.75 : 0.45};
     z-index: 1;
 `;
 
@@ -106,7 +105,7 @@ const StyledButtonsWrapper = styled.div`
     display: flex;
 `;
 
-const Calendar = ({ selectedDate, onDateChange = () => {} }) => {
+const Calendar = ({ selectedDate, onDateChange = () => {}, theme = 'dark' }) => {
     const monthNames = [
         "January",
         "February",
@@ -129,7 +128,6 @@ const Calendar = ({ selectedDate, onDateChange = () => {} }) => {
     const handlePrevMonth = () => {
         setCurrentDate((prevDate) => {
             const prevMonthDate = new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1);
-            console.log(prevMonthDate.getMonth());
             return prevMonthDate;
         });
     };
@@ -187,16 +185,16 @@ const Calendar = ({ selectedDate, onDateChange = () => {} }) => {
     }
 
     return (
-        <WidgetContainer>
-            <DecoratedWonkyStrawberryBg src={decoratedWonkyStrawberryBg} />
+        <WidgetContainer theme={theme}>
+            <DecoratedWonkyStrawberryBg theme={theme} src={decoratedWonkyStrawberryBg} />
             <Header>
                 <MonthYear>{`${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`}</MonthYear>
                 <StyledButtonsWrapper>
-                    <SecondaryButton icon={<ArrowLeft />} onClick={handlePrevMonth} />
+                    <SecondaryButton icon={<ArrowLeft theme={theme} />} onClick={handlePrevMonth} />
                     <div style={{
                         marginLeft: 8
                     }}>
-                        <SecondaryButton icon={<ArrowRight />} onClick={handleNextMonth} />
+                        <SecondaryButton icon={<ArrowRight theme={theme} />} onClick={handleNextMonth} />
                     </div>
                 </StyledButtonsWrapper>
             </Header>
@@ -211,6 +209,7 @@ const Calendar = ({ selectedDate, onDateChange = () => {} }) => {
                         <DayOfMonth
                             key={day ? day.getDate() : Math.random()}
                             active={day && day.getDate() === currentDate.getDate()}
+                            theme={theme}
                             onClick={() => {
                                 if (day) {
                                     setCurrentDate(day);

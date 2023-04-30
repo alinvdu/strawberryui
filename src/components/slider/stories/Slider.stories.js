@@ -10,14 +10,24 @@ export default {
             {
                 name: 'black',
                 value: '#1B1C1D',
-            },
+            }, {
+              name: 'white',
+              value: 'white',
+            }
             ],
         },
     }
 };
 
-export const SliderStory = {
+export const SliderLight = {
   args: {
-    currentDate: new Date()
+    theme: 'light'
+  },
+};
+
+export const SliderDark = {
+  args: {
+    currentDate: new Date(),
+    theme: 'dark'
   },
 };

@@ -10,14 +10,25 @@ export default {
             {
                 name: 'black',
                 value: '#1B1C1D',
-            },
+            }, {
+              name: 'white',
+              value: 'white',
+            }
             ],
         },
     }
 };
 
-export const CalendarStory = {
+export const CalendarDark = {
   args: {
-    currentDate: new Date()
+    currentDate: new Date(),
+    theme: 'dark'
+  },
+};
+
+export const CalendarLight = {
+  args: {
+    currentDate: new Date(),
+    theme: 'light'
   },
 };

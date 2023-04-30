@@ -2,9 +2,12 @@ import styled from 'styled-components';
 import { useState } from 'react';
 
 import presentationBg from './assets/images/presentation-bg.jpg';
+import presentationBgWhite from './assets/images/presentation-bg-white.jpg';
 import logoBg from './assets/images/logo-bg.png';
 import iconGroup1 from './assets/images/icon-group-1.png';
 import iconGroup2 from './assets/images/icon-group-2.png';
+import iconGroup1White from './assets/images/icon-group-1-white.png';
+import iconGroup2White from './assets/images/icon-group-2-white.png';
 import MusicWidget from '../components/music-widget/MusicWidget';
 import LoginPage from '../components/login-page/LoginPage';
 import Pagination from '../components/pagination/Pagination';
@@ -19,7 +22,8 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 
 const Wrapper = styled.div`
-    background: radial-gradient(101.13% 168.45% at 99.5% 0.53%, #2E3C44 3.12%, #253439 39.06%, #232D36 46.88%, #2D3D42 100%);
+    background: ${({ theme }) => theme === 'dark' ? `radial-gradient(101.13% 168.45% at 99.5% 0.53%, #2E3C44 3.12%, #253439 39.06%, #232D36 46.88%, #2D3D42 100%)` :
+        `radial-gradient(101.13% 168.45% at 99.5% 0.53%, #A8A8A8 3.12%, #84BDCF 39.06%, #95BBDF 46.88%, #78A9B9 100%);`};
     padding: 42px;
     flex: 1;
     box-sizing: border-box;
@@ -33,7 +37,8 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
-    background: radial-gradient(98.36% 98.36% at 100% -1.24%, rgba(49, 59, 71, 0.88) 0%, rgba(88, 101, 115, 0.39) 25.13%, rgba(54, 63, 72, 0.49) 38.54%, rgba(30, 39, 50, 0.76) 53.16%, rgba(34, 43, 53, 0.29) 72.92%, rgba(27, 36, 44, 0.78) 82.63%, rgba(21, 29, 35, 0.42) 100%), url(${presentationBg});
+    background: ${({ theme }) => theme === 'dark' ? `radial-gradient(98.36% 98.36% at 100% -1.24%, rgba(49, 59, 71, 0.88) 0%, rgba(88, 101, 115, 0.39) 25.13%, rgba(54, 63, 72, 0.49) 38.54%, rgba(30, 39, 50, 0.76) 53.16%, rgba(34, 43, 53, 0.29) 72.92%, rgba(27, 36, 44, 0.78) 82.63%, rgba(21, 29, 35, 0.42) 100%), url(${presentationBg})` :
+        `radial-gradient(98.36% 98.36% at 100% -1.24%, rgba(108, 156, 216, 0.78) 0%, rgba(210, 218, 227, 0.39) 25.13%, rgba(214, 217, 220, 0.49) 38.54%, rgba(189, 208, 228, 0.76) 53.16%, rgba(156, 181, 209, 0.29) 72.92%, rgba(186, 202, 218, 0.78) 82.63%, rgba(166, 211, 244, 0.42) 100%), url('${presentationBgWhite}');`};
     background-attachment: fixed;
     mix-blend-mode: normal;
     box-shadow: -14px 14px 20px 8px rgba(0, 0, 0, 0.49);
@@ -110,10 +115,11 @@ const RightComponent = styled.div`
     flex: 1;
     box-sizing: border-box;
     padding: 62px 14px 14px 14px;
-    position: relative; /* to position the widget button */
+    position: relative;
     height: 100%;
-    background: linear-gradient(89.93deg, rgba(0, 0, 0, 0.2) 0.71%, rgba(0, 0, 0, 0) 19.33%);
-    border-left: 1px solid rgba(0, 157, 167, 0.15);
+    background: ${({ theme }) => theme === 'dark' ? `linear-gradient(89.93deg, rgba(0, 0, 0, 0.2) 0.71%, rgba(0, 0, 0, 0) 19.33%)` :
+        `linear-gradient(89.93deg, rgba(42, 119, 124, 0.1) 0.71%, rgba(0, 0, 0, 0) 19.33%)`};
+    border-left: 1px solid ${({ theme }) => theme === 'dark' ? `rgba(0, 157, 167, 0.15)` : `rgba(1, 80, 85, 0.15)`};
     border-radius: 30px;
 
     @media only screen and (min-width: 1610px) and (max-width: 1770px) {
@@ -130,14 +136,41 @@ const RightComponent = styled.div`
     }
 `;
 
-const LogoBg = styled.div`
+const LogoWrapper = styled.div`
+    position: relative;
     margin-top: -30px;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 332px;
     height: 279px;
+
+    @media (min-width: 1350px) and (max-width: 1400px),
+        (min-width: 950px) and (max-width: 1000px),
+        (min-width: 1300px) and (max-width: 1350px),
+        (min-width: 900px) and (max-width: 950px),
+        (min-width: 1250px) and (max-width: 1300px),
+        (min-width: 850px) and (max-width: 900px),
+        (min-width: 800px) and (max-width: 850px) {
+            height: 259px;
+    }
+
+    @media
+        (min-width: 800px) and (max-width: 850px) {
+        width: 249px;
+        height: 209px;
+        background-size: contain;
+    }
+`;
+
+const LogoBg = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-image: url('${logoBg}');
+    opacity: ${({ theme }) => theme === 'dark' ? 0.66 : 0.85};
 
     @media (min-width: 1350px) and (max-width: 1400px),
         (min-width: 950px) and (max-width: 1000px),
@@ -158,6 +191,7 @@ const LogoBg = styled.div`
 `;
 
 const LogoText = styled.h1`
+    position: relative;
     font-size: 34px;
     font-weight: 300;
     color: white;
@@ -179,24 +213,25 @@ const WidgetButton = styled.button`
     font-family: 'Roboto Condensed', sans-serif;
     font-weight: 400;
     flex-basis: 0;
-    padding: 8px 15px 8px 20px;
+    padding: 9px;
+    margin-right: 8px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border: 2px solid rgba(38, 209, 220, 0.99);
-    box-shadow: 0px 0px 9px 1px rgba(38, 209, 220, 0.5);
+    border: 2px solid ${({ theme }) => theme === 'dark' ? `rgba(38, 209, 220, 0.99)` : `#2a777c`};
+    box-shadow: 0px 0px 9px 1px ${({ theme }) => theme === 'dark' ? `rgba(38, 209, 220, 0.5)` : `rgba(1, 156, 166, 0.33)`};
     border-radius: 22.5px;
     background: none;
-    color: #45ecf7;
+    color: ${({ theme }) => theme === 'dark' ? `#45ecf7` : `#126065`};
     font-size: 17px;
     opacity: 0.92;
     cursor: pointer;
 
     &:hover {
         opacity: 1;
-        box-shadow: 0px 0px 9px 1px rgba(38, 209, 220, 0.9);
+        box-shadow: 0px 0px 9px 1px ${({ theme }) => theme === 'dark' ? `rgba(38, 209, 220, 0.9)` : `rgba(1, 156, 166, 0.73)`};
     }
 
     span {
@@ -206,15 +241,15 @@ const WidgetButton = styled.button`
 `;
 
 const SelectionWrapper = styled.div`
-    border: ${({ isActive }) => isActive ? '2px solid rgba(38, 209, 220, 0.99)' : '2px solid transparent'};
-    box-shadow: ${({ isActive }) => isActive ? '0px 0px 15px 1px rgba(38, 209, 220, 0.79)' : ''};
+    border: ${({ isActive, theme }) => isActive ? `2px solid ${theme === 'dark' ? 'rgba(38, 209, 220, 0.99)' : '#2A777C'}` : '2px solid transparent'};
+    box-shadow: ${({ isActive, theme }) => isActive ? `0px 0px 15px 1px ${theme === 'dark' ? 'rgba(38, 209, 220, 0.79)' : 'rgba(1, 156, 166, 0.33)'}` : ''};
     border-radius: 30px;
     margin-bottom: 65px;
     display: flex;
     cursor: pointer;
 
     &:hover {
-        border: ${({ isActive }) => isActive ? '2px solid rgba(38, 209, 220, 0.99)' : '2px solid rgba(38, 209, 220, 0.59)'};
+        border: ${({ isActive, theme }) => isActive ? `2px solid ${theme === 'dark' ? 'rgba(38, 209, 220, 0.99)' : '#2A777C'}` : `2px solid ${theme === 'dark' ? 'rgba(38, 209, 220, 0.59)' : 'rgba(42, 119, 124, 0.59)'}`};
     }
 
     @media
@@ -243,13 +278,12 @@ const ContentSelection = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
-    color: white;
 `;
 
 const ContentTitle = styled.h2`
     font-size: 20px;
-    font-weight: 300;
     margin-top: 0px;
+    font-weight: ${({ theme }) => theme === 'dark' ? 300 : 400};
 
     @media
         (min-width: 1770px) and (max-width: 1820px),
@@ -273,7 +307,6 @@ const ContentTitle = styled.h2`
 
 const ContentDescription = styled.p`
     font-size: 16;
-    font-weight: 300;
     margin: 0;
     
 
@@ -395,7 +428,7 @@ const OpenSourceTitle = styled.h2`
 const OpenSourceDescription = styled.p`
     font-size: 16px;
     margin: 6px 0px 0px 0px;
-    font-weight: 300;
+    font-weight: ${({ theme }) => theme === 'dark' ? 300 : 400};
 
     @media (min-width: 1770px) and (max-width: 1820px),
         (min-width: 1400px) and (max-width: 1450px),
@@ -408,7 +441,7 @@ const OpenSourceDescription = styled.p`
 
 const OpenSourceLink = styled.a`
     margin-top: 25px;
-    color: rgba(102, 227, 255, 1);
+    color: ${({ theme }) => theme === 'dark' ? `rgba(102, 227, 255, 1)` : `#00858D`};
     cursor: pointer;
 `;
 
@@ -417,15 +450,17 @@ const LeftContentWrapper = styled.div`
     flex-direction: column;
     justify-content: space-between;
     padding-bottom: 60px;
+    color: ${({ theme }) => theme === 'dark' ? 'white' : '#126065'};
+    font-weight: ${({ theme }) => theme === 'dark' ? 300 : 400};
 `;
 
-const SelectionComponent = ({ title, description, icon, onClick, isActive }) => (
-    <SelectionWrapper isActive={isActive} onClick={onClick}>
+const SelectionComponent = ({ title, description, icon, onClick, isActive, theme }) => (
+    <SelectionWrapper isActive={isActive} onClick={onClick} theme={theme}>
         <IconWrapper>
             {icon}
         </IconWrapper>
         <ContentSelection>
-            <ContentTitle>
+            <ContentTitle theme={theme}>
                 {title}
             </ContentTitle>
             <ContentDescription>
@@ -446,7 +481,7 @@ const ComponentListWrapper = styled.div`
     }
 `;
 
-const ContentSelectionList = ({ handleOptionSelect }) => {
+const ContentSelectionList = ({ handleOptionSelect, theme }) => {
     const [selectedOption, setSelectedOption] = useState('components');
 
     const handleSelection = (option) => {
@@ -459,16 +494,18 @@ const ContentSelectionList = ({ handleOptionSelect }) => {
             <SelectionComponent
                 title="Strawberry themed user interface"
                 description="Incorporates the vibrant colors and visual elements of a strawberry into its layout."
-                icon={<StyledIconGroup1 src={iconGroup1} />}
+                icon={<StyledIconGroup1 src={theme === 'dark' ? iconGroup1 : iconGroup1White} />}
                 onClick={() => handleSelection('components')}
                 isActive={selectedOption === 'components'}
+                theme={theme}
             />
             <SelectionComponent
                 title="Made with Midjourney and ChatGPT"
                 description="Prompts made available for faster prototyping and development."
-                icon={<StyledIconGroup2 src={iconGroup2} />}
+                icon={<StyledIconGroup2 src={theme === 'dark' ? iconGroup2 : iconGroup2White} />}
                 onClick={() => handleSelection('prompts')}
                 isActive={selectedOption === 'prompts'}
+                theme={theme}
             />
         </div>
     );
@@ -490,7 +527,7 @@ const ColumnItem = styled.div`
 
 const THREE_COLUMNS_THRESHOLD = 1213;
 
-const renderMusicWidget = () => (
+const renderMusicWidget = (theme) => (
     <MusicWidget
         author="David Bowie"
         title="Space Oddity"
@@ -501,10 +538,11 @@ const renderMusicWidget = () => (
         onPlay={() => {
 
         }}
+        theme={theme}
     />
 );
 
-const renderToDoList = () => (
+const renderToDoList = (theme) => (
     <ToDoList items={[{
         description: 'Strawberry Fields Forever',
         done: false
@@ -517,61 +555,63 @@ const renderToDoList = () => (
     }, {
         description: 'Lucy in the Sky with Diamonds',
         done: false
-    }]} />
+    }]} theme={theme} />
 );
 
-const renderPaginationAndTextField = () => (
+const renderPaginationAndTextField = (theme) => (
     <ComponentWrapper>
         <Pagination
             totalElements={100}
             elementsPerPage={10}
             onPageChange={() => { }}
+            theme={theme}
         />
         <div style={{
             marginTop: '20px',
         }}>
-            <TextField onSubmit={() => { }} />
+            <TextField onSubmit={() => { }} theme={theme} />
         </div>
     </ComponentWrapper>
 );
 
-const renderLoginPage = () => (
+const renderLoginPage = (theme) => (
     <LoginPage
         url='localhost'
         onLogin={() => {
         }}
+        theme={theme}
     />
 );
 
-const renderCalendarAndOthers = () => (
+const renderCalendarAndOthers = (theme) => (
     <div style={{
         display: 'flex',
     }}>
-        <Calendar />
+        <Calendar theme={theme} />
         <div style={{
             display: 'flex',
             flexDirection: 'column',
             marginLeft: '20px'
         }}>
-            <Slider />
+            <Slider theme={theme} />
             <div style={{
                 marginTop: 10,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center'
             }}>
-                <PrimaryButton icon={<AcceptIcon />} />
+                <PrimaryButton icon={<AcceptIcon />} theme={theme} />
                 <div style={{
                     marginTop: 10
                 }}>
-                    <PrimaryButton icon={<DeleteButton>X</DeleteButton>} variant={VARIANTS.BLUE} />
+                    <PrimaryButton icon={<DeleteButton>X</DeleteButton>} variant={VARIANTS.BLUE} theme={theme} />
                 </div>
             </div>
         </div>
     </div>
 );
 
-const ComponentList = () => {
+const ComponentList = ({ theme }) => {
     const componentListRef = useRef(null);
     const [dummy, setDummyState] = useState(0);
 
@@ -596,28 +636,28 @@ const ComponentList = () => {
             <ComponentListWrapper ref={componentListRef}>
                 <Column>
                     <ColumnItem>
-                        {renderMusicWidget()}
+                        {renderMusicWidget(theme)}
                     </ColumnItem>
                     <ColumnItem style={{
                         marginTop: 10
                     }}>
-                        {renderToDoList()}
+                        {renderToDoList(theme)}
                     </ColumnItem>
                     <ColumnItem style={{
                         marginTop: 15
                     }}>
-                        {renderPaginationAndTextField()}
+                        {renderPaginationAndTextField(theme)}
                     </ColumnItem>
                 </Column>
                 <Column>
                     <ColumnItem>
-                        {renderLoginPage()}
+                        {renderLoginPage(theme)}
                     </ColumnItem>
                     <ColumnItem>
-                        {renderCalendarAndOthers()}
+                        {renderCalendarAndOthers(theme)}
                     </ColumnItem>
                     <ColumnItem>
-                        <TimeWidget />
+                        <TimeWidget theme={theme} />
                     </ColumnItem>
                 </Column>
             </ComponentListWrapper>
@@ -628,26 +668,26 @@ const ComponentList = () => {
         <ComponentListWrapper ref={componentListRef}>
             <Column>
                 <ColumnItem>
-                    {renderMusicWidget()}
+                    {renderMusicWidget(theme)}
                 </ColumnItem>
                 <ColumnItem>
-                    {renderToDoList()}
-                </ColumnItem>
-            </Column>
-            <Column>
-                <ColumnItem>
-                    {renderLoginPage()}
-                </ColumnItem>
-                <ColumnItem>
-                    {renderCalendarAndOthers()}
+                    {renderToDoList(theme)}
                 </ColumnItem>
             </Column>
             <Column>
                 <ColumnItem>
-                    <TimeWidget />
+                    {renderLoginPage(theme)}
                 </ColumnItem>
                 <ColumnItem>
-                    {renderPaginationAndTextField()}
+                    {renderCalendarAndOthers(theme)}
+                </ColumnItem>
+            </Column>
+            <Column>
+                <ColumnItem>
+                    <TimeWidget theme={theme} />
+                </ColumnItem>
+                <ColumnItem>
+                    {renderPaginationAndTextField(theme)}
                 </ColumnItem>
             </Column>
         </ComponentListWrapper>
@@ -666,19 +706,23 @@ const ApiAndPromptsWrapper = styled.div`
 const PromptTitle = styled.div`
     font-size: 20px;
     margin-top: 20px;
-    font-weight: 300;
+    font-weight: ${({ theme }) => theme === 'dark' ? 300 : 400};
     margin-bottom: 20px;
+
+    color: ${({ theme }) => theme === 'dark' ? 'white' : '#126065'};
 `;
 
 const PromptWrapper = styled.div`
-    background: rgba(19, 31, 36, 1);
+    background: ${({ theme }) => theme === 'dark' ? `rgba(19, 31, 36, 1)` : `#a8cbdb`};
     width: 350px;
     padding: 20px;
     padding-bottom: 15px;
-    border: 1px solid rgba(38, 209, 220, 0.29);
+    border: 1px solid ${({ theme }) => theme === 'dark' ? `rgba(38, 209, 220, 0.29)` : `#61a7ab`};
     border-radius: 30px;
     margin-bottom: 5px;
     box-sizing: border-box;
+
+    color: ${({ theme }) => theme === 'dark' ? `#fff` : `#126065`};
 `;
 
 const PromptInsideTitle = styled.div`
@@ -711,12 +755,12 @@ const Tooltip = styled.span`
     transform: translate(-50%, -100%);
     padding: 5px;
     border-radius: 5px;
-    background: rgba(19, 31, 36, 1);
-    border: 1px solid rgba(38, 209, 220, 0.29);
+    background: ${({ theme }) => theme === 'dark' ? `rgba(19, 31, 36, 1)` : `rgba(186, 203, 225, 1)`};
+    border: 1px solid ${({ theme }) => theme === 'dark' ? `rgba(38, 209, 220, 0.29)` : `#126065`};
     font-size: 14px;
     white-space: nowrap;
     z-index: 9999;
-    font-weight: 300;
+    font-weight: ${({ theme }) => theme === 'dark' ? 300 : 400};
 `;
 
 const CopyButtonWrapper = styled.div`
@@ -739,18 +783,18 @@ const CheckButton = ({ fill = "rgba(38, 209, 220, 0.99)", marginTop = 0 }) => (
     <svg xmlns="http://www.w3.org/2000/svg" style={{ marginTop }} width="24" height="24" viewBox="0 0 24 24" fill={fill}><path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"></path></svg>
 )
 
-const ExpandButton = ({ onClick, onMouseEnter, onMouseLeave }) => (
+const ExpandButton = ({ onClick, onMouseEnter, onMouseLeave, fill = "rgba(38, 209, 220, 0.99)" }) => (
     <svg onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{
         marginTop: 5,
         marginRight: 10
-    }} fill="rgba(38, 209, 220, 0.99)"><path d="M5 12H3v9h9v-2H5zm7-7h7v7h2V3h-9z"></path></svg>
+    }} fill={fill}><path d="M5 12H3v9h9v-2H5zm7-7h7v7h2V3h-9z"></path></svg>
 );
 
-const CollapseButton = ({ onClick, onMouseEnter, onMouseLeave }) => (
-    <svg onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}  onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{
+const CollapseButton = ({ onClick, onMouseEnter, onMouseLeave, fill = "rgba(38, 209, 220, 0.99)" }) => (
+    <svg onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{
         marginTop: 5,
         marginRight: 10
-    }} fill="rgba(38, 209, 220, 0.99)"><path d="M2 15h7v7h2v-9H2v2zM15 2h-2v9h9V9h-7V2z"></path></svg>
+    }} fill={fill}><path d="M2 15h7v7h2v-9H2v2zM15 2h-2v9h9V9h-7V2z"></path></svg>
 );
 
 const Ellipsis = styled.span`
@@ -758,7 +802,7 @@ const Ellipsis = styled.span`
     opacity: 0.8;
 `;
 
-const Prompt = ({ description, title }) => {
+const Prompt = ({ description, title, theme }) => {
     const [tooltipText, setTooltipText] = useState('Copy to clipboard');
     const [expandButtonTooltipText, setExpandButtonToolTipText] = useState('Show all text');
     const [showExpandedButton, setShowExpandedButton] = useState(false);
@@ -776,7 +820,7 @@ const Prompt = ({ description, title }) => {
     }, []);
 
     return (
-        <PromptWrapper>
+        <PromptWrapper theme={theme}>
             {title ? <PromptInsideTitle>{title}</PromptInsideTitle> : null}
             <PromptDescription isExpanded={isExpanded} ref={descriptionRef}>{description}</PromptDescription>
             {!isExpanded && showExpandedButton ? <Ellipsis>...</Ellipsis> : null}
@@ -784,7 +828,7 @@ const Prompt = ({ description, title }) => {
                 {showExpandedButton ?
                     <ExpandButtonWrapper>
                         {!isExpanded ?
-                            <ExpandButton onClick={() => {
+                            <ExpandButton fill={theme === 'dark' ? "rgba(38, 209, 220, 0.99)" : "#126065"} onClick={() => {
                                 setExpanded(true);
                                 setExpandButtonToolTipText('Show less');
                                 setShowExpandTooltip(false);
@@ -794,7 +838,7 @@ const Prompt = ({ description, title }) => {
                             }} onMouseLeave={() => {
                                 setShowExpandTooltip(false);
                             }} /> :
-                            <CollapseButton onClick={() => {
+                            <CollapseButton fill={theme === 'dark' ? "rgba(38, 209, 220, 0.99)" : "#126065"} onClick={() => {
                                 setExpanded(false);
                                 setExpandButtonToolTipText('Show all text');
                                 setShowExpandTooltip(false);
@@ -825,8 +869,8 @@ const Prompt = ({ description, title }) => {
                                     setShowTooltip(false);
                                 }, 3000);
                             });
-                        }} /> :
-                        <CheckButton marginTop={5} />}
+                        }} fill={theme === 'dark' ? "rgba(38, 209, 220, 0.99)" : "#126065"} /> :
+                        <CheckButton fill={theme === 'dark' ? "rgba(38, 209, 220, 0.99)" : "#126065"} marginTop={5} />}
                     {showTooltip ? <Tooltip>{tooltipText}</Tooltip> : null}
                 </CopyButtonWrapper>
             </ButtonsWrapper>
@@ -841,7 +885,7 @@ const WidgetWrapper = styled.div`
     margin-bottom: 8px;
 `;
 
-const ApiAndPrompts = () => {
+const ApiAndPrompts = ({ theme }) => {
     const componentListRef = useRef(null);
     const [dummy, setDummyState] = useState(0);
 
@@ -861,57 +905,57 @@ const ApiAndPrompts = () => {
         };
     }, []);
 
-    const renderProjectSetup = () => (
+    const renderProjectSetup = (theme) => (
         <>
-            <PromptTitle>
+            <PromptTitle theme={theme}>
                 Project Setup
             </PromptTitle>
-            <Prompt title="ChatGPT" description="We are using storybook, styled-components and create react app." />
-            <Prompt title="ChatGPT" description="The widgets are modern with black blue background, it uses the following colors: #102131 - gradient color for background, #030714 -gradient color for background, #24111D - stroke color. Border-radius of 30px." />
+            <Prompt theme={theme} title="ChatGPT" description="We are using storybook, styled-components and create react app." />
+            <Prompt theme={theme} title="ChatGPT" description="The widgets are modern with black blue background, it uses the following colors: #102131 - gradient color for background, #030714 -gradient color for background, #24111D - stroke color. Border-radius of 30px." />
         </>
     );
 
-    const renderMusicWidgetPrompt = () => (
+    const renderMusicWidgetPrompt = (theme) => (
         <PromptWidgetWrapper>
-            <PromptTitle>
+            <PromptTitle theme={theme}>
                 Music Widget
             </PromptTitle>
             <WidgetWrapper>
-                {renderMusicWidget()}
+                {renderMusicWidget(theme)}
             </WidgetWrapper>
-            <Prompt title="ChatGPT" description={
+            <Prompt theme={theme} title="ChatGPT" description={
                 <div>Create a React component for a music widget, the component accepts an object interface (or prop-type) and the object has the following fields: title, author, album. It also receives four functions that will be called inside the component on the following three buttons: Pause, Play, Next Song, Previous Song.<br /><br />The dimensions of the widget are the following: 350px wide, 400px height. It's composed of two parts: the top part has the author name on top and the title of the song and album on the bottom and it has 328px height. The top part also has a background-image of a strawberry. <br /><br />The bottom part contains the buttons aligned in the center, on the left we have previous song icon, on the middle we have pause/play song and on the right we have next song icon.<br /><br />Let's add an internal state to the component with the initial value of playing = true. Then if playing is true we show the pause button, if playing is false we show the play button. If the user clicks play we change the state and the same with pause. At the same time, the component receive another prop function called onStateChange that will be called with true if the state changes to true and false otherwise.<br /><br /> Let's remove the onStateChange prop and just stick with onPlay and onPause</div>} />
-            <Prompt title="MidJourney" description="mui-music-widget.png strawberry-widget.png strawberry ui widget for listening to music, play button, change song, name of the artist, description, minimalist design, black and blue background, strawberry, clean, high resolution, 4k" />
+            <Prompt theme={theme} title="MidJourney" description="mui-music-widget.png strawberry-widget.png strawberry ui widget for listening to music, play button, change song, name of the artist, description, minimalist design, black and blue background, strawberry, clean, high resolution, 4k" />
         </PromptWidgetWrapper>
     );
 
     const renderLoginpagePrompt = () => (
         <>
-            <PromptTitle>
+            <PromptTitle theme={theme}>
                 Login Page
             </PromptTitle>
-            <Prompt title="ChatGPT" description={<div>Create a React component for Login the user. It should receive a login url and a function that will be called upon login completion.<br /><br /> The wrapper should be 450px wide by 374px height, with a border-radius of 45px. It should also have a container with a border-radius of 45px that also uses a background image with a strawberry.<br /><br />The header part contains a decorated image with a strawberry and the Login text.<br />The main part contains a form with 3 rows:<br />- The first row contains an user icon and the username textfield.<br />- The second row contains the password icon and the password textfield.<br />- The third row contains the login button.<br /><br />And the end of the component we have a row with Forgot Password question.</div>} />
-            <Prompt title="MidJourney" description="mui-design.png generic-strawberry.png strawberry ui widget for user input, text form, rounded outlined web input, minimalist design, black blue background, clean, high resolution" />
+            <Prompt theme={theme} title="ChatGPT" description={<div>Create a React component for Login the user. It should receive a login url and a function that will be called upon login completion.<br /><br /> The wrapper should be 450px wide by 374px height, with a border-radius of 45px. It should also have a container with a border-radius of 45px that also uses a background image with a strawberry.<br /><br />The header part contains a decorated image with a strawberry and the Login text.<br />The main part contains a form with 3 rows:<br />- The first row contains an user icon and the username textfield.<br />- The second row contains the password icon and the password textfield.<br />- The third row contains the login button.<br /><br />And the end of the component we have a row with Forgot Password question.</div>} />
+            <Prompt theme={theme} title="MidJourney" description="mui-design.png generic-strawberry.png strawberry ui widget for user input, text form, rounded outlined web input, minimalist design, black blue background, clean, high resolution" />
         </>
     );
 
-    const renderCalendarPrompt = () => (
+    const renderCalendarPrompt = (theme) => (
         <>
-            <PromptTitle>
+            <PromptTitle theme={theme}>
                 Calendar
             </PromptTitle>
             <WidgetWrapper>
-                <Calendar />
+                <Calendar theme={theme} />
             </WidgetWrapper>
-            <Prompt title="ChatGPT" description="Create a widget component for a Calendar. It can receive a selected date, a function that will be called when the date will change. It should have a header part and main content part. The header part should have two elements that are spaced around the margins. The left element should hold the date and the year and the right element..." />
-            <Prompt title="MidJourney" description="mui-design.png strawberry-generic-widget.png strawberry ui widget for calendar in the web browser, flat surface, date picker, days of the month, month, minimalist design, black and blue background, strawberry, clean, high resolution" />
+            <Prompt theme={theme} title="ChatGPT" description="Create a widget component for a Calendar. It can receive a selected date, a function that will be called when the date will change. It should have a header part and main content part. The header part should have two elements that are spaced around the margins. The left element should hold the date and the year and the right element..." />
+            <Prompt theme={theme} title="MidJourney" description="mui-design.png strawberry-generic-widget.png strawberry ui widget for calendar in the web browser, flat surface, date picker, days of the month, month, minimalist design, black and blue background, strawberry, clean, high resolution" />
 
         </>
     );
 
-    const renderPaginationPrompt = () => (
+    const renderPaginationPrompt = (theme) => (
         <>
-            <PromptTitle>
+            <PromptTitle theme={theme}>
                 Pagination
             </PromptTitle>
             <WidgetWrapper>
@@ -919,52 +963,53 @@ const ApiAndPrompts = () => {
                     totalElements={100}
                     elementsPerPage={10}
                     onPageChange={() => { }}
+                    theme={theme}
                 />
             </WidgetWrapper>
-            <Prompt title="ChatGPT" description={<div>
+            <Prompt theme={theme} title="ChatGPT" description={<div>
                 Create a React component for pagination. It should receive the total number of elements and how many elements are for each page as prop. It should also receive a callback function for when the page is being changed, which will be called with the page index. It should keep an internal state of it's current page.<br /><br />The component has three parts, the left container which contains the left arrow icon, the middle container which holds the pages number and the right container which contains the right icon.<br /><br />The middle container can hold up to 5 numbers, if the total number of pages are more than 5 than we can show the first page, the last page and 3 pages that are near the current page. Everything in between will be marked by dots.
             </div>} />
-            <Prompt title="MidJourney" description="mui-pagination.png strawberry-generic-widget.png strawberry ui widget for pagination flat in web browser, next page, prev page icons, number of entities, minimalist design, black and blue background, strawberry, clean, high resolution" />
+            <Prompt theme={theme} title="MidJourney" description="mui-pagination.png strawberry-generic-widget.png strawberry ui widget for pagination flat in web browser, next page, prev page icons, number of entities, minimalist design, black and blue background, strawberry, clean, high resolution" />
 
         </>
     );
 
-    const renderSliderPrompt = () => (
+    const renderSliderPrompt = (theme) => (
         <>
-            <PromptTitle>
+            <PromptTitle theme={theme}>
                 Slider
             </PromptTitle>
-            <Prompt title="ChatGPT" description={<div>Let's create a React component for a Slider. It has the width of 66px and height of 195px & border-radius of 25px. It has a wrapper and inside the wrapper it has a container composed of 3 elements:<br />- The slider button, which is a round button that can be moved on the slider line.<br />- The slider line which is 150px height.<br />- A decorated strawberry at the base of the slider line.</div>} />
-            <Prompt title="MidJourney" description="mui-design.png strawberry-generic-widget.png strawberry ui widget for slider component, slider with button, line, minimalist design, black blue background, clean, high resolution" />
+            <Prompt theme={theme} title="ChatGPT" description={<div>Let's create a React component for a Slider. It has the width of 66px and height of 195px & border-radius of 25px. It has a wrapper and inside the wrapper it has a container composed of 3 elements:<br />- The slider button, which is a round button that can be moved on the slider line.<br />- The slider line which is 150px height.<br />- A decorated strawberry at the base of the slider line.</div>} />
+            <Prompt theme={theme} title="MidJourney" description="mui-design.png strawberry-generic-widget.png strawberry ui widget for slider component, slider with button, line, minimalist design, black blue background, clean, high resolution" />
         </>
     );
 
-    const renderTimeWidgetPrompt = () => (
+    const renderTimeWidgetPrompt = (theme) => (
         <>
-            <PromptTitle>
+            <PromptTitle theme={theme}>
                 Time Widget
             </PromptTitle>
             <WidgetWrapper>
-                <TimeWidget />
+                <TimeWidget theme={theme} />
             </WidgetWrapper>
-            <Prompt title="ChatGPT" description={<div>
+            <Prompt theme={theme} title="ChatGPT" description={<div>
                 Lets implement a Time Widget component in React that will give the user the ability to select Hours, Minutes and Seconds.<br /><br />On top part of the widget we three columns, each of them denoting title for the list that are beneath them in which you can actually scroll and select the values.<br /><br />The first column is Hours, second is Minutes and third is Seconds.<br /><br />Beneath this three title columns there is a wide space with a decorating image of strawberries, that has full width.<br /><br />Beneath the strawberry image, we find the selected content container, it has three columns showing the user the currently selected values for each column (hours, minutes, seconds). If there is no selected value, then we show a blue line. The selected content container, has a background gradient and is delimited by shadow and border.<br /><br />Next we have three columns which contain lists for the user to pick the values that populate each column (hours, minutes, seconds). The lists are scrollable, and the center elements are the one being picked. The center elements are highlighted by two bars denoting the currently selected element. The user can also click on any value in order for the selection to jump at that specific value. For instance if the minute 13 is centered in the list, then it will be selected, if the minute 16 is not centered but the user clicks on it, the component will move it to the center and select it.<br /><br />Requirement: the scroll should be able to move just by 1 value when scrolling softly butmove faster when scrolling rapidly.
             </div>} />
-            <Prompt title="MidJourney" description="mui-design.png strawberry-generic-widget.png strawberry ui widget for choosing time, text input, time component, am/pm, clock icon, dropdown list, scroll, minimalist design, black blue background, clean, high resolution" />
+            <Prompt theme={theme} title="MidJourney" description="mui-design.png strawberry-generic-widget.png strawberry ui widget for choosing time, text input, time component, am/pm, clock icon, dropdown list, scroll, minimalist design, black blue background, clean, high resolution" />
 
         </>
     );
 
-    const renderToDoListPrompt = () => (
+    const renderToDoListPrompt = (theme) => (
         <>
-            <PromptTitle>
+            <PromptTitle theme={theme}>
                 To Do List
             </PromptTitle>
             <WidgetWrapper>
-                {renderToDoList()}
+                {renderToDoList(theme)}
             </WidgetWrapper>
-            <Prompt title="ChatGPT" description={<div>Create a React component named ToDoList. As props it can receive a few pre-defined items, that can have the following fields: description as a string, done as a boolean. The component itself is 350px wide and 535px long. It is composed of the following elements:<br /><br />Wrapper component with a linear gradient. Container component with a linear gradient and a background picture mixed. At top it will have a decorating strawberry component image, positioned absolute relative to the container.<br /><br /> In the middle it will render the list of todos with a background and a small padding. It will also have a checkbox in front denoting if the todo is checked or not. A TextField beneath the rendered todos where the user can input the next item.<br /><br />Two buttons placed:<br />1. At the bottom in the center, add button, it has a wrapper with a border and then the button itself.<br />2. Near the first button but on right top of it. It's just a button with and X.<br /><br />The component should be able to add new items using the TextField and the Add Button, the new item should appear in the list. The rendered list should have a height of 190px and the rest should be scrollable.</div>} />
-            <Prompt title="Design" description="mui-design.png strawberry-generic-widget.png strawberry ui widget for user input, text form, rounded outlined web input, minimalist design, black blue background, clean, high resolution" />
+            <Prompt theme={theme} title="ChatGPT" description={<div>Create a React component named ToDoList. As props it can receive a few pre-defined items, that can have the following fields: description as a string, done as a boolean. The component itself is 350px wide and 535px long. It is composed of the following elements:<br /><br />Wrapper component with a linear gradient. Container component with a linear gradient and a background picture mixed. At top it will have a decorating strawberry component image, positioned absolute relative to the container.<br /><br /> In the middle it will render the list of todos with a background and a small padding. It will also have a checkbox in front denoting if the todo is checked or not. A TextField beneath the rendered todos where the user can input the next item.<br /><br />Two buttons placed:<br />1. At the bottom in the center, add button, it has a wrapper with a border and then the button itself.<br />2. Near the first button but on right top of it. It's just a button with and X.<br /><br />The component should be able to add new items using the TextField and the Add Button, the new item should appear in the list. The rendered list should have a height of 190px and the rest should be scrollable.</div>} />
+            <Prompt theme={theme} title="Design" description="mui-design.png strawberry-generic-widget.png strawberry ui widget for user input, text form, rounded outlined web input, minimalist design, black blue background, clean, high resolution" />
         </>
     );
 
@@ -973,30 +1018,30 @@ const ApiAndPrompts = () => {
             <ApiAndPromptsWrapper ref={componentListRef}>
                 <Column>
                     <ColumnItem>
-                        {renderProjectSetup()}
+                        {renderProjectSetup(theme)}
                     </ColumnItem>
                     <ColumnItem>
-                        {renderMusicWidgetPrompt()}
+                        {renderMusicWidgetPrompt(theme)}
                     </ColumnItem>
                     <ColumnItem>
-                        {renderLoginpagePrompt()}
+                        {renderLoginpagePrompt(theme)}
                     </ColumnItem>
                     <ColumnItem>
-                        {renderTimeWidgetPrompt()}
+                        {renderTimeWidgetPrompt(theme)}
                     </ColumnItem>
                 </Column>
                 <Column>
                     <ColumnItem>
-                        {renderCalendarPrompt()}
+                        {renderCalendarPrompt(theme)}
                     </ColumnItem>
                     <ColumnItem>
-                        {renderPaginationPrompt()}
+                        {renderPaginationPrompt(theme)}
                     </ColumnItem>
                     <ColumnItem>
-                        {renderSliderPrompt()}
+                        {renderSliderPrompt(theme)}
                     </ColumnItem>
                     <ColumnItem>
-                        {renderToDoListPrompt()}
+                        {renderToDoListPrompt(theme)}
                     </ColumnItem>
                 </Column>
             </ApiAndPromptsWrapper>
@@ -1007,42 +1052,52 @@ const ApiAndPrompts = () => {
         <ApiAndPromptsWrapper ref={componentListRef}>
             <Column>
                 <ColumnItem>
-                    {renderProjectSetup()}
+                    {renderProjectSetup(theme)}
                 </ColumnItem>
                 <ColumnItem>
-                    {renderMusicWidgetPrompt()}
+                    {renderMusicWidgetPrompt(theme)}
                 </ColumnItem>
                 <ColumnItem>
-                    {renderLoginpagePrompt()}
-                </ColumnItem>
-            </Column>
-            <Column>
-                <ColumnItem>
-                    {renderCalendarPrompt()}
-                </ColumnItem>
-                <ColumnItem>
-                    {renderPaginationPrompt()}
-                </ColumnItem>
-                <ColumnItem>
-                    {renderSliderPrompt()}
+                    {renderLoginpagePrompt(theme)}
                 </ColumnItem>
             </Column>
             <Column>
                 <ColumnItem>
-                    {renderTimeWidgetPrompt()}
+                    {renderCalendarPrompt(theme)}
                 </ColumnItem>
                 <ColumnItem>
-                    {renderToDoListPrompt()}
+                    {renderPaginationPrompt(theme)}
+                </ColumnItem>
+                <ColumnItem>
+                    {renderSliderPrompt(theme)}
+                </ColumnItem>
+            </Column>
+            <Column>
+                <ColumnItem>
+                    {renderTimeWidgetPrompt(theme)}
+                </ColumnItem>
+                <ColumnItem>
+                    {renderToDoListPrompt(theme)}
                 </ColumnItem>
             </Column>
         </ApiAndPromptsWrapper>
     );
 };
 
+const SunIcon = ({ fill }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={fill}><path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z"></path></svg>
+);
+
+const MoonIcon = ({ fill }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={fill}><path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z"></path></svg>
+);
+
 const App = () => {
     const [selectedOption, setSelectedOption] = useState('components');
     const [tooltipText, setTooltipText] = useState('Copy!');
     const [showTooltip, setShowTooltip] = useState(false);
+    const [showSwitchThemeTooltip, setShowSwitchThemeTooltip] = useState(false);
+    const [theme, setTheme] = useState('light');
 
     const handleOptionSelect = (option) => {
         setSelectedOption(option);
@@ -1051,31 +1106,32 @@ const App = () => {
     const npmInstallCommand = "npm install strawberry-ui";
 
     return (
-        <Wrapper>
-            <Container>
+        <Wrapper theme={theme}>
+            <Container theme={theme}>
                 <MainContainer>
                     <LeftComponent>
-                        <LogoBg>
+                        <LogoWrapper>
+                            <LogoBg theme={theme} />
                             <LogoText>Strawberry UI</LogoText>
-                        </LogoBg>
-                        <LeftContentWrapper>
-                            <ContentSelectionList handleOptionSelect={handleOptionSelect} />
+                        </LogoWrapper>
+                        <LeftContentWrapper theme={theme}>
+                            <ContentSelectionList handleOptionSelect={handleOptionSelect} theme={theme} />
                             <OpenSourceWrapper>
                                 <OpenSourceTitle>
                                     Open Source
                                 </OpenSourceTitle>
-                                <OpenSourceDescription>
+                                <OpenSourceDescription theme={theme}>
                                     It's free and you can contribute directly!
                                 </OpenSourceDescription>
-                                <OpenSourceLink href="https://github.com/bobergsatoko/strawberry-ui">
+                                <OpenSourceLink theme={theme} href="https://github.com/bobergsatoko/strawberry-ui">
                                     Learn More
                                 </OpenSourceLink>
                             </OpenSourceWrapper>
                         </LeftContentWrapper>
                     </LeftComponent>
-                    <RightComponent>
+                    <RightComponent theme={theme}>
                         <WidgetButtonWrapper>
-                            <WidgetButton onClick={() => {
+                            <WidgetButton theme={theme} onClick={() => {
                                 navigator.clipboard.writeText(npmInstallCommand).then(() => {
                                     setTooltipText('Copied!');
                                     setTimeout(() => {
@@ -1091,11 +1147,21 @@ const App = () => {
                                 }
                             }}>
                                 <span>{npmInstallCommand}</span>
-                                {tooltipText !== 'Copied!' ? <CopyToClipboardButton fill="rgba(38, 209, 220, 0.99)" /> : <CheckButton fill="rgba(38, 209, 220, 0.99)" />}
-                                {showTooltip ? <Tooltip bottom={15} marginLeft={95}>{tooltipText}</Tooltip> : null}
+                                {tooltipText !== 'Copied!' ? <CopyToClipboardButton fill={theme === 'dark' ? `rgba(38, 209, 220, 0.99)` : `#126065`} /> : <CheckButton fill={theme === 'dark' ? `rgba(38, 209, 220, 0.99)` : `#126065`} />}
+                                {showTooltip ? <Tooltip theme={theme} bottom={20} marginLeft={85}>{tooltipText}</Tooltip> : null}
+                            </WidgetButton>
+                            <WidgetButton theme={theme} onClick={() => {
+                                setTheme(theme === 'dark' ? 'light' : 'dark');
+                            }} onMouseEnter={() => {
+                                setShowSwitchThemeTooltip(true);
+                            }} onMouseLeave={() => {
+                                setShowSwitchThemeTooltip(false);
+                            }}>
+                                {theme === 'dark' ? <SunIcon fill="rgb(69, 236, 247)" /> : <MoonIcon fill="#126065" />}
+                                {showSwitchThemeTooltip ? <Tooltip bottom={20} theme={theme}>{theme === 'dark' ? 'Turn on the lights' : 'Turn off the lights'}</Tooltip> : null}
                             </WidgetButton>
                         </WidgetButtonWrapper>
-                        {selectedOption === 'components' ? <ComponentList /> : <ApiAndPrompts />}
+                        {selectedOption === 'components' ? <ComponentList theme={theme} /> : <ApiAndPrompts theme={theme} />}
                     </RightComponent>
                 </MainContainer>
             </Container>
