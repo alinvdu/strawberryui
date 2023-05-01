@@ -483,11 +483,9 @@ const ComponentListWrapper = styled.div`
     }
 `;
 
-const ContentSelectionList = ({ handleOptionSelect, theme }) => {
-    const [selectedOption, setSelectedOption] = useState('components');
+const ContentSelectionList = ({ handleOptionSelect, theme, selectedOption }) => {
 
     const handleSelection = (option) => {
-        setSelectedOption(option);
         handleOptionSelect(option);
     };
 
@@ -842,7 +840,6 @@ const Prompt = ({ description, title, theme }) => {
                                 setExpandButtonToolTipText('Show less');
                                 setShowExpandTooltip(false);
                             }} onMouseEnter={() => {
-                                console.log('this')
                                 setShowExpandTooltip(true);
                             }} onMouseLeave={() => {
                                 setShowExpandTooltip(false);
@@ -1102,7 +1099,7 @@ const MoonIcon = ({ fill }) => (
 );
 
 const App = () => {
-    const [selectedOption, setSelectedOption] = useState('components');
+    const [selectedOption, setSelectedOption] = useState(window.location.href && window.location.href.indexOf("prompts") !== -1 ? 'prompts' : 'components');
     const [tooltipText, setTooltipText] = useState('Copy!');
     const [showTooltip, setShowTooltip] = useState(false);
     const [showSwitchThemeTooltip, setShowSwitchThemeTooltip] = useState(false);
@@ -1124,7 +1121,7 @@ const App = () => {
                             <LogoText>Strawberry UI</LogoText>
                         </LogoWrapper>
                         <LeftContentWrapper theme={theme}>
-                            <ContentSelectionList handleOptionSelect={handleOptionSelect} theme={theme} />
+                            <ContentSelectionList selectedOption={selectedOption} handleOptionSelect={handleOptionSelect} theme={theme} />
                             <OpenSourceWrapper>
                                 <OpenSourceTitle>
                                     Open Source
