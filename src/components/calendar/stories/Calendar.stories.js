@@ -1,4 +1,4 @@
-import Calendar from './../Calendar';
+import Calendar from '../Calendar';
 
 export default {
   title: 'Components/Calendar',

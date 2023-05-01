@@ -1112,7 +1112,7 @@ const App = () => {
         setSelectedOption(option);
     };
 
-    const npmInstallCommand = "npm install strawberry-ui";
+    const npmInstallCommand = "npm install delicious-strawberryui";
 
     return (
         <Wrapper theme={theme}>

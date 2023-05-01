@@ -1,23 +1,29 @@
 {
-  "name": "strawberry-ui",
-  "version": "0.1.0",
-  "private": true,
+  "name": "delicious-strawberryui",
+  "version": "1.0.2",
+  "main": "library-build/index.js",
+  "files": [
+    "library-build"
+  ],
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "styled-components": "^5.3.9"
   },
+  "keywords": [
+    "react",
+    "react-component",
+    "strawberryui"
+  ],
+  "license": "MIT",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "build-library": "rollup -c"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +54,7 @@
     ]
   },
   "devDependencies": {
+    "@rollup/plugin-babel": "^6.0.3",
     "@storybook/addon-essentials": "^7.0.4",
     "@storybook/addon-interactions": "^7.0.4",
     "@storybook/addon-links": "^7.0.4",
@@ -58,9 +65,16 @@
     "@storybook/testing-library": "^0.0.14-next.2",
     "babel-plugin-named-exports-order": "^0.0.2",
     "prop-types": "^15.8.1",
+    "rollup": "^2.79.1",
+    "rollup-plugin-image": "^1.0.2",
     "storybook": "^7.0.4",
     "storybook-dark-mode": "^3.0.0",
-    "styled-components": "^5.3.9",
-    "webpack": "^5.79.0"
+    "webpack": "^5.79.0",
+    "@rollup/plugin-image": "^3.0.2",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
   }
 }
