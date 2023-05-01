@@ -2,7 +2,7 @@
 
 Welcome to the Strawberry UI repository, a vibrant and visually stunning UI library inspired by the sweet and juicy fruit - the strawberry.
 
-Our goal with Strawberry UI is to incorporate the playful and energetic colors of a strawberry into its layout and design, creating a lively and engaging user interface. This library is made possible by the collaboration between Midjourney and ChatGPT, leveraging the expertise of both teams to create a unique and exciting UI experience.
+Our goal with Strawberry UI is to incorporate the playful and energetic colors of a strawberry into its layout and design, creating a lively and engaging user interface. This library is made possible by the collaboration between Midjourney and ChatGPT platforms, leveraging the expertise of both products to create a unique and exciting UI experience.
 
 One of the unique features of Strawberry UI is its integration with ChatGPT, which exposes prompts to guide users through the UI design process. This means that you can easily create beautiful and functional interfaces with the help of a powerful AI assistant.
 
