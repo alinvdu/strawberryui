@@ -47,6 +47,10 @@ const Container = styled.div`
     border-radius: 30px;
     flex: 1;
     display: flex;
+
+    @media (min-width: 1920px) and (max-width: 3000px) {
+        background-size: cover;
+    }
 `;
 
 const MainContainer = styled.div`
@@ -198,6 +202,7 @@ const LogoText = styled.h1`
     font-weight: 300;
     color: white;
     margin-top: -15px;
+    cursor: pointer;
 
     @media
         (min-width: 800px) and (max-width: 850px) {
@@ -519,10 +524,23 @@ const Column = styled.div`
     display: flex;
     flex-direction: column;
     margin-right: 22px;
+
+    @media only screen and (min-width: 0px) and (max-width: 800px) {
+        margin-right: 0px;
+    }
 `;
 
 const ColumnItem = styled.div`
+    display: flex;
+    flex-direction: column;
     margin-bottom: 22px;
+`;
+
+const ColumnItemSmall = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 22px;
+    max-width: 350px;
 `;
 
 const THREE_COLUMNS_THRESHOLD = 1213;
@@ -642,19 +660,19 @@ const ComponentList = ({ theme }) => {
         return (
             <ComponentListWrapper ref={componentListRef}>
                 <Column>
-                    <ColumnItem>
+                    <ColumnItemSmall>
                         {renderMusicWidget(theme)}
-                    </ColumnItem>
+                    </ColumnItemSmall>
                     <ColumnItem style={{
                         marginTop: 10
                     }}>
                         {renderToDoList(theme)}
                     </ColumnItem>
-                    <ColumnItem style={{
+                    <ColumnItemSmall style={{
                         marginTop: 15
                     }}>
                         {renderPaginationAndTextField(theme)}
-                    </ColumnItem>
+                    </ColumnItemSmall>
                 </Column>
                 <Column>
                     <ColumnItem>
@@ -674,12 +692,12 @@ const ComponentList = ({ theme }) => {
     return (
         <ComponentListWrapper ref={componentListRef}>
             <Column>
-                <ColumnItem>
+                <ColumnItemSmall>
                     {renderMusicWidget(theme)}
-                </ColumnItem>
-                <ColumnItem>
+                </ColumnItemSmall>
+                <ColumnItemSmall>
                     {renderToDoList(theme)}
-                </ColumnItem>
+                </ColumnItemSmall>
             </Column>
             <Column>
                 <ColumnItem>
@@ -690,12 +708,12 @@ const ComponentList = ({ theme }) => {
                 </ColumnItem>
             </Column>
             <Column>
-                <ColumnItem>
+                <ColumnItemSmall>
                     <TimeWidget theme={theme} />
-                </ColumnItem>
-                <ColumnItem>
+                </ColumnItemSmall>
+                <ColumnItemSmall>
                     {renderPaginationAndTextField(theme)}
-                </ColumnItem>
+                </ColumnItemSmall>
             </Column>
         </ComponentListWrapper>
     );
@@ -1118,7 +1136,9 @@ const App = () => {
                     <LeftComponent>
                         <LogoWrapper>
                             <LogoBg theme={theme} />
-                            <LogoText>Strawberry UI</LogoText>
+                            <LogoText onClick={() => {
+                                window.location.href = '/';
+                            }}>Strawberry UI</LogoText>
                         </LogoWrapper>
                         <LeftContentWrapper theme={theme}>
                             <ContentSelectionList selectedOption={selectedOption} handleOptionSelect={handleOptionSelect} theme={theme} />
