@@ -12,13 +12,18 @@ const StyledWrapper = styled.button`
     border: 1px solid #79A8CE;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     cursor: pointer;
+
+    &:focus-visible {
+        outline: none;
+        border: 1px solid ${({ theme }) => theme === 'dark' ? '#FFFFFF' : '#000000'};
+    }
 `;
 
-const SecondaryButton = ({ icon, onClick }) => (
-    <StyledWrapper onClick={onClick}>
+const SecondaryButton = React.forwardRef(({ icon, onClick, theme }, ref) => (
+    <StyledWrapper ref={ref} onClick={onClick} theme={theme}>
         {icon}
     </StyledWrapper>
-);
+));
 
 SecondaryButton.propTypes = {
     icon: PropTypes.element.isRequired,

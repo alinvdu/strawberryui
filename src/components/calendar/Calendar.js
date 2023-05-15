@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import decoratedWonkyStrawberryBg from './wonky-strawberry.png';
 import SecondaryButton from '../buttons/SecondaryButton';
 import { ArrowLeft, ArrowRight } from '../buttons/SecondaryButtonUtils';
+import { useEffect } from 'react';
 
 
 /**
@@ -11,7 +12,7 @@ import { ArrowLeft, ArrowRight } from '../buttons/SecondaryButtonUtils';
 const WidgetContainer = styled.div`
     position: relative;
     background: ${({ theme }) => theme === 'dark' ?
-        `linear-gradient(221.07deg, #206D8E 5.96%, #0E405C 17.32%, #092F4A 27.37%, #04283C 36.3%, #012336 47.7%, #022539 56.93%, #052E44 74.64%, #0F414B 83.98%, #257091 95.67%)`:
+        `linear-gradient(221.07deg, #206D8E 5.96%, #0E405C 17.32%, #092F4A 27.37%, #04283C 36.3%, #012336 47.7%, #022539 56.93%, #052E44 74.64%, #0F414B 83.98%, #257091 95.67%)` :
         `linear-gradient(176.26deg, rgba(224, 242, 249, 0.5) 8.15%, rgba(199, 229, 249, 0.5) 29.44%), linear-gradient(221.07deg, #F9FDFF 5.96%, #BEDEEB 17.32%, #A9CCDA 27.37%, #7EAEC0 36.3%, #80ADBE 47.7%, #7CA3B3 56.93%, #8CB3C1 74.64%, #93C2CC 83.98%, #82AFC2 95.67%);
 `};
     border: 1px solid ${({ theme }) => theme === 'dark' ? `rgba(47, 122, 122, 1)` : `rgba(141, 207, 207, 1)`};
@@ -26,7 +27,7 @@ const WidgetContainer = styled.div`
 
     color: ${({ theme }) => theme === 'dark' ? 'white' : '#126065'};
 
-    ${({ theme}) => theme === 'dark' ? `&::after {
+    ${({ theme }) => theme === 'dark' ? `&::after {
         position: absolute;
         content: '';
         top: -1px;
@@ -73,6 +74,12 @@ const DayOfMonth = styled.div`
         border: 1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.75)' : 'rgba(18, 96, 101, 1)'};
         border-radius: 50%;
     ` : 'border: 1px solid transparent;'};
+
+    &:focus-visible {
+        outline: none;
+        border: 1px solid ${({ theme }) => theme === 'dark' ? 'rgba(255, 255, 255, 0.75)' : 'rgba(18, 96, 101, 1)'};
+        border-radius: 50%;
+    }
 `;
 
 const StyledWeekContainer = styled.div`
@@ -97,7 +104,7 @@ const DecoratedWonkyStrawberryBg = styled.img`
     top: -1px;
     left: 50%;
     margin-left: -80px;
-    opacity: ${({ theme }) => theme === 'dark' ?  0.75 : 0.45};
+    opacity: ${({ theme }) => theme === 'dark' ? 0.75 : 0.45};
     z-index: 1;
 `;
 
@@ -105,7 +112,7 @@ const StyledButtonsWrapper = styled.div`
     display: flex;
 `;
 
-const Calendar = ({ selectedDate, onDateChange = () => {}, theme = 'dark' }) => {
+const Calendar = ({ selectedDate, onDateChange = () => { }, theme = 'dark' }) => {
     const monthNames = [
         "January",
         "February",
@@ -124,6 +131,69 @@ const Calendar = ({ selectedDate, onDateChange = () => {}, theme = 'dark' }) => 
     const daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"];
 
     const [currentDate, setCurrentDate] = useState(selectedDate || new Date());
+
+    // Focus states
+    const [focusDay, setFocusDay] = useState(null);
+    const [focusButton, setFocusButton] = useState(null);
+
+    // Refs
+    const daysRef = useRef([]);
+    const buttonsRef = useRef([]);
+
+    useEffect(() => {
+        // Autofocus on the current day when component is focused
+        if (daysRef.current[currentDate.getDate() - 1]) {
+            daysRef.current[currentDate.getDate() - 1].focus();
+            setFocusDay(currentDate.getDate());
+        }
+    }, []);
+
+    const handleKeyDown = (e) => {
+        const isButtonFocused = buttonsRef.current.some(ref => {
+            return ref === document.activeElement;
+        });
+    
+        if (e.key === "ArrowLeft") {
+            if (isButtonFocused && focusButton !== null) {
+                setFocusButton((prevFocus) => Math.max(prevFocus - 1, 0));
+            } else if (focusDay !== null && focusDay > 0) { // Add check for focusDay > 0
+                setFocusDay((prevFocus) => {
+                    const nextFocus = Math.max(prevFocus - 1, 0);
+                    return daysRef.current[nextFocus] ? nextFocus : prevFocus; // Only change focus if next focusable day exists
+                });
+            }
+        } else if (e.key === "ArrowRight") {
+            if (isButtonFocused && focusButton !== null) {
+                setFocusButton((prevFocus) => Math.min(prevFocus + 1, buttonsRef.current.length - 1));
+            } else if (focusDay !== null && focusDay < daysRef.current.length - 1) { // Add check for focusDay < daysRef.current.length - 1
+                setFocusDay((prevFocus) => {
+                    const nextFocus = Math.min(prevFocus + 1, daysRef.current.length - 1);
+                    return daysRef.current[nextFocus] ? nextFocus : prevFocus; // Only change focus if next focusable day exists
+                });
+            }
+        } else if (e.key === "Tab") {
+            e.preventDefault();
+            if (e.shiftKey) {
+                setFocusDay(null);
+                setFocusButton(0);
+            } else {
+                setFocusButton(null);
+                setFocusDay(0);
+            }
+        } else if (e.key === "Enter" && focusDay !== null) {
+            const selectedDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), focusDay + 1);
+            setCurrentDate(selectedDay);
+            onDateChange(selectedDay);
+        }
+    };
+
+    useEffect(() => {
+        if (focusDay !== null && daysRef.current[focusDay]) {
+            daysRef.current[focusDay].focus();
+        } else if (focusButton !== null && buttonsRef.current[focusButton]) {
+            buttonsRef.current[focusButton].focus();
+        }
+    }, [focusDay, focusButton]);
 
     const handlePrevMonth = () => {
         setCurrentDate((prevDate) => {
@@ -185,16 +255,18 @@ const Calendar = ({ selectedDate, onDateChange = () => {}, theme = 'dark' }) => 
     }
 
     return (
-        <WidgetContainer theme={theme}>
+        <WidgetContainer theme={theme} onKeyDown={handleKeyDown}>
             <DecoratedWonkyStrawberryBg theme={theme} src={decoratedWonkyStrawberryBg} />
             <Header>
                 <MonthYear>{`${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`}</MonthYear>
                 <StyledButtonsWrapper>
-                    <SecondaryButton icon={<ArrowLeft theme={theme} />} onClick={handlePrevMonth} />
+                    <SecondaryButton theme={theme} icon={<ArrowLeft theme={theme} />} onClick={handlePrevMonth} ref={el => buttonsRef.current[0] = el}
+                        tabIndex={0} />
                     <div style={{
                         marginLeft: 8
                     }}>
-                        <SecondaryButton icon={<ArrowRight theme={theme} />} onClick={handleNextMonth} />
+                        <SecondaryButton theme={theme} icon={<ArrowRight theme={theme} />} onClick={handleNextMonth} ref={el => buttonsRef.current[1] = el}
+                            tabIndex={0} />
                     </div>
                 </StyledButtonsWrapper>
             </Header>
@@ -205,7 +277,7 @@ const Calendar = ({ selectedDate, onDateChange = () => {}, theme = 'dark' }) => 
             </DaysOfWeek>
             {weeksOfMonth.map((week, i) => (
                 <StyledWeekContainer key={i}>
-                    {week.map((day) => (
+                    {week.map((day, j) => (
                         <DayOfMonth
                             key={day ? day.getDate() : Math.random()}
                             active={day && day.getDate() === currentDate.getDate()}
@@ -217,6 +289,8 @@ const Calendar = ({ selectedDate, onDateChange = () => {}, theme = 'dark' }) => 
                                 }
                             }}
                             style={{ opacity: day ? 1 : 0.4, pointerEvents: day ? "auto" : "none" }}
+                            tabIndex={day ? 0 : -1}  // Only allow focus if the day is not null
+                            ref={el => day ? daysRef.current[i * 7 + j] = el : null}  // Only assign a ref if the day is not null
                         >
                             {day ? day.getDate() : ""}
                         </DayOfMonth>
