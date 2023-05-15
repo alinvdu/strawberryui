@@ -144,7 +144,7 @@ const Calendar = ({ selectedDate, onDateChange = () => { }, theme = 'dark' }) =>
         // Autofocus on the current day when component is focused
         if (daysRef.current[currentDate.getDate() - 1]) {
             daysRef.current[currentDate.getDate() - 1].focus();
-            setFocusDay(currentDate.getDate());
+            setFocusDay(currentDate.getDate() - 1);
         }
     }, []);
 
@@ -290,7 +290,11 @@ const Calendar = ({ selectedDate, onDateChange = () => { }, theme = 'dark' }) =>
                             }}
                             style={{ opacity: day ? 1 : 0.4, pointerEvents: day ? "auto" : "none" }}
                             tabIndex={day ? 0 : -1}  // Only allow focus if the day is not null
-                            ref={el => day ? daysRef.current[i * 7 + j] = el : null}  // Only assign a ref if the day is not null
+                            ref={el => {
+                                if (day) {
+                                    daysRef.current[i * 7 + j - emptyDays.length] = el
+                                }
+                            }}  // Only assign a ref if the day is not null
                         >
                             {day ? day.getDate() : ""}
                         </DayOfMonth>
