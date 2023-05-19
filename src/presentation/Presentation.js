@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useState } from 'react';
 
 import presentationBg from './assets/images/presentation-bg.jpg';
@@ -20,6 +20,24 @@ import PrimaryButton, { VARIANTS } from '../components/buttons/PrimaryButton';
 import { AcceptIcon } from '../components/text-field/TextFieldsUtils';
 import { useRef } from 'react';
 import { useEffect } from 'react';
+import calendarPromptHistory from "../components/calendar/messages/messages.json";
+
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+const components = {
+    code({ node, inline, className, children, ...props }) {
+        const match = /language-(\w+)/.exec(className || '')
+        return !inline && match ? (
+            <SyntaxHighlighter style={atomDark} language={match[1]} PreTag="div" children={String(children).replace(/\n$/, '')} {...props} />
+        ) : (
+            <code className={className} {...props}>
+                {children}
+            </code>
+        )
+    }
+}
 
 const Wrapper = styled.div`
     background: ${({ theme }) => theme === 'dark' ? `radial-gradient(101.13% 168.45% at 99.5% 0.53%, #2E3C44 3.12%, #253439 39.06%, #232D36 46.88%, #2D3D42 100%)` :
@@ -768,7 +786,7 @@ const PromptDescription = styled.div`
 
 const ButtonsWrapper = styled.div`
     display: flex;
-    width: 100%;
+    flex: 1;
     justify-content: flex-end;
 `;
 
@@ -827,7 +845,30 @@ const Ellipsis = styled.span`
     opacity: 0.8;
 `;
 
-const Prompt = ({ description, title, theme }) => {
+const ButtonsContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const StyledShowPromptHistoryButtonWrapper = styled.div`
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 15px;
+    color: rgba(38, 209, 220, 0.9);
+    cursor: pointer;
+
+    &:hover {
+        color: rgba(38, 209, 220, 1);
+    }
+`;
+
+const ShowPromptHistoryButton = ({ onClick }) => (
+    <StyledShowPromptHistoryButtonWrapper onClick={onClick}>
+        Show Prompt History
+    </StyledShowPromptHistoryButtonWrapper>
+);
+
+const Prompt = ({ description, title, theme, promptHistory, setShowPromptDialog }) => {
     const [tooltipText, setTooltipText] = useState('Copy to clipboard');
     const [expandButtonTooltipText, setExpandButtonToolTipText] = useState('Show all text');
     const [showExpandedButton, setShowExpandedButton] = useState(false);
@@ -849,55 +890,63 @@ const Prompt = ({ description, title, theme }) => {
             {title ? <PromptInsideTitle>{title}</PromptInsideTitle> : null}
             <PromptDescription isExpanded={isExpanded} ref={descriptionRef}>{description}</PromptDescription>
             {!isExpanded && showExpandedButton ? <Ellipsis>...</Ellipsis> : null}
-            <ButtonsWrapper>
-                {showExpandedButton ?
-                    <ExpandButtonWrapper>
-                        {!isExpanded ?
-                            <ExpandButton fill={theme === 'dark' ? "rgba(38, 209, 220, 0.99)" : "#126065"} onClick={() => {
-                                setExpanded(true);
-                                setExpandButtonToolTipText('Show less');
-                                setShowExpandTooltip(false);
-                            }} onMouseEnter={() => {
-                                setShowExpandTooltip(true);
-                            }} onMouseLeave={() => {
-                                setShowExpandTooltip(false);
-                            }} /> :
-                            <CollapseButton fill={theme === 'dark' ? "rgba(38, 209, 220, 0.99)" : "#126065"} onClick={() => {
-                                setExpanded(false);
-                                setExpandButtonToolTipText('Show all text');
-                                setShowExpandTooltip(false);
-                            }} onMouseEnter={() => {
-                                setShowExpandTooltip(true);
-                            }} onMouseLeave={() => {
-                                setShowExpandTooltip(false);
-                            }} />}
-                        {showExpandTooltip ? <Tooltip theme={theme}>{expandButtonTooltipText}</Tooltip> : null}
-                    </ExpandButtonWrapper> : null}
-                <CopyButtonWrapper onMouseEnter={() => {
-                    setShowTooltip(true);
-                }} onMouseLeave={() => {
-                    if (tooltipText !== 'Copied!') {
-                        setShowTooltip(false);
-                    }
-                }}>
-                    {tooltipText !== 'Copied!' ?
-                        <CopyToClipboardButton marginTop={5} onClick={() => {
-                            let toCopyDescription = description;
-                            if (typeof description === 'object') {
-                                toCopyDescription = descriptionRef.current.textContent
-                            }
-                            navigator.clipboard.writeText(toCopyDescription).then(() => {
-                                setTooltipText('Copied!');
-                                setTimeout(() => {
-                                    setTooltipText('Copy to clipboard');
-                                    setShowTooltip(false);
-                                }, 3000);
-                            });
-                        }} fill={theme === 'dark' ? "rgba(38, 209, 220, 0.99)" : "#126065"} /> :
-                        <CheckButton fill={theme === 'dark' ? "rgba(38, 209, 220, 0.99)" : "#126065"} marginTop={5} />}
-                    {showTooltip ? <Tooltip theme={theme}>{tooltipText}</Tooltip> : null}
-                </CopyButtonWrapper>
-            </ButtonsWrapper>
+            <ButtonsContainer>
+                {promptHistory ? <ShowPromptHistoryButton onClick={() => {
+                    setShowPromptDialog({
+                        show: true,
+                        promptHistory
+                    });
+                }} /> : null}
+                <ButtonsWrapper>
+                    {showExpandedButton ?
+                        <ExpandButtonWrapper>
+                            {!isExpanded ?
+                                <ExpandButton fill={theme === 'dark' ? "rgba(38, 209, 220, 0.99)" : "#126065"} onClick={() => {
+                                    setExpanded(true);
+                                    setExpandButtonToolTipText('Show less');
+                                    setShowExpandTooltip(false);
+                                }} onMouseEnter={() => {
+                                    setShowExpandTooltip(true);
+                                }} onMouseLeave={() => {
+                                    setShowExpandTooltip(false);
+                                }} /> :
+                                <CollapseButton fill={theme === 'dark' ? "rgba(38, 209, 220, 0.99)" : "#126065"} onClick={() => {
+                                    setExpanded(false);
+                                    setExpandButtonToolTipText('Show all text');
+                                    setShowExpandTooltip(false);
+                                }} onMouseEnter={() => {
+                                    setShowExpandTooltip(true);
+                                }} onMouseLeave={() => {
+                                    setShowExpandTooltip(false);
+                                }} />}
+                            {showExpandTooltip ? <Tooltip theme={theme}>{expandButtonTooltipText}</Tooltip> : null}
+                        </ExpandButtonWrapper> : null}
+                    <CopyButtonWrapper onMouseEnter={() => {
+                        setShowTooltip(true);
+                    }} onMouseLeave={() => {
+                        if (tooltipText !== 'Copied!') {
+                            setShowTooltip(false);
+                        }
+                    }}>
+                        {tooltipText !== 'Copied!' ?
+                            <CopyToClipboardButton marginTop={5} onClick={() => {
+                                let toCopyDescription = description;
+                                if (typeof description === 'object') {
+                                    toCopyDescription = descriptionRef.current.textContent
+                                }
+                                navigator.clipboard.writeText(toCopyDescription).then(() => {
+                                    setTooltipText('Copied!');
+                                    setTimeout(() => {
+                                        setTooltipText('Copy to clipboard');
+                                        setShowTooltip(false);
+                                    }, 3000);
+                                });
+                            }} fill={theme === 'dark' ? "rgba(38, 209, 220, 0.99)" : "#126065"} /> :
+                            <CheckButton fill={theme === 'dark' ? "rgba(38, 209, 220, 0.99)" : "#126065"} marginTop={5} />}
+                        {showTooltip ? <Tooltip theme={theme}>{tooltipText}</Tooltip> : null}
+                    </CopyButtonWrapper>
+                </ButtonsWrapper>
+            </ButtonsContainer>
         </PromptWrapper>
     );
 };
@@ -909,7 +958,7 @@ const WidgetWrapper = styled.div`
     margin-bottom: 8px;
 `;
 
-const ApiAndPrompts = ({ theme }) => {
+const ApiAndPrompts = ({ theme, setShowPromptDialog }) => {
     const componentListRef = useRef(null);
     const [dummy, setDummyState] = useState(0);
 
@@ -971,7 +1020,7 @@ const ApiAndPrompts = ({ theme }) => {
             <WidgetWrapper>
                 <Calendar theme={theme} />
             </WidgetWrapper>
-            <Prompt theme={theme} title="ChatGPT" description="Create a widget component for a Calendar. It can receive a selected date, a function that will be called when the date will change. It should have a header part and main content part. The header part should have two elements that are spaced around the margins. The left element should hold the date and the year and the right element..." />
+            <Prompt promptHistory={calendarPromptHistory} setShowPromptDialog={setShowPromptDialog} theme={theme} title="ChatGPT" description={<div>Create a widget component for a Calendar. It can receive a selected date, a function that will be called when the date will change. It should have a header part and main content part. The header part should have two elements that are spaced around the margins.<br /><br /> The left element should hold the date and the year and the right element should contain two arrows (left & right) that we can use in order to change the month. It should have a background that's a combination between a gradient and a strawberry image.<br /><br />Main content should hold the days of the week (S, M, T, W, T, F, S) each on a separate column and the days of the month should be divided upon those specific columns. In total should be 7 columns.</div>} />
             <Prompt theme={theme} title="MidJourney" description="mui-design.png strawberry-generic-widget.png strawberry ui widget for calendar in the web browser, flat surface, date picker, days of the month, month, minimalist design, black and blue background, strawberry, clean, high resolution" />
 
         </>
@@ -1116,12 +1165,199 @@ const MoonIcon = ({ fill }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={fill}><path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z"></path></svg>
 );
 
+const StyledPromptDialog = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    display: flex;
+    flex-direction: row;
+`;
+
+const StyledPromptDialogContainer = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1200px;
+    height: calc(100% - 100px);
+    background-color: #0c151d;
+    border-radius: 21px;
+    box-shadow: -14px 14px 20px 8px rgba(0, 0, 0, 0.49);
+    border: 1px solid ${({ theme }) => theme === 'dark' ? `rgba(38, 209, 220, 0.29)` : `#61a7ab`};
+    padding: 21px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    @media
+        (min-width: 0px) and (max-width: 1250px) {
+            width: calc(100% - 100px);
+    }
+`;
+
+const StyledPromptDialogHeader = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+`;
+
+const StyledPromptDialogHeaderTitle = styled.div`
+    font-size: 25px;
+    font-weight: 500;
+    font-family: 'Roboto Condensed', sans-serif;
+`;
+
+const StyledPromptDialogHeaderCloseButton = styled.div`
+    cursor: pointer;
+`;
+
+const CloseIcon = ({ fill }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill={fill}><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
+);
+
+const StyledCloseIcon = styled(CloseIcon)`
+
+`;
+
+const StyledContainer = styled.div`
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    flex-direction: column;
+    overflow: auto;
+`;
+
+const PromptStyle = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const PromptHistoryTitle = styled.div`
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: 'Roboto Condensed', sans-serif;
+    cursor: pointer;
+`;
+
+const PromptHistoryMessagesContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+
+    ${({ isShown }) => !isShown ? css`
+        max-height: 0;
+    ` : css`
+        max-height: 100%;
+    `}
+`;
+
+const StyledMessageWrapper = styled.div`
+    font-family: 'Roboto Condensed', sans-serif;
+    display: flex;
+    border: 1px solid ${({ theme }) => theme === 'dark' ? `rgba(38, 209, 220, 0.29)` : `#61a7ab`};
+    margin-bottom: 10px;
+    font-size: 16px;
+    padding: 15px;
+    box-sizing: border-box;
+    margin-right: 10px;
+    border-radius: 8px;
+    background-color: ${({ type }) => type === 'user_prompt' ? '#101e2b' : '#133241'};
+    flex-direction: column;
+`;
+
+const ToggleIcon = ({ theme, className, onClick }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" onClick={onClick} className={className} width="12" height="12" viewBox="0 0 24 24" fill={theme === 'dark' ? 'rgba(38, 209, 220, 0.99)' : '#126065'}><path d="M5.536 21.886a1.004 1.004 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A1 1 0 0 0 5 3v18a1 1 0 0 0 .536.886z"></path></svg>
+);
+
+const StyledToggleButton = styled(ToggleIcon)`
+    margin-right: 5px;
+    cursor: pointer;
+
+    ${({ isToggled }) => isToggled && css`
+        transform: rotate(90deg);
+    `}
+`;
+
+const params = new URLSearchParams(window.location.search);
+const prompt = params.get('prompt');
+const history = params.get('history');
+
+const PromptDialog = ({ theme, promptHistory, setShowPromptDialog }) => {
+    const [isShown, toggleIsShown] = useState(promptHistory.reduce((acc, value, index) => {
+        if (prompt) {
+            // if there is a prompt, calculate if we need to show it or not
+            acc[index] = value.history_component === history;
+        } else {
+            acc[index] = true;
+        }
+        return acc;
+    }, {}));
+
+    return (
+        <StyledPromptDialog>
+            <StyledPromptDialogContainer theme={theme}>
+                <StyledPromptDialogHeader>
+                    <StyledPromptDialogHeaderTitle>
+                        Prompt History
+                    </StyledPromptDialogHeaderTitle>
+                    <StyledPromptDialogHeaderCloseButton onClick={() => setShowPromptDialog({ show: false, promptHistory: null })}>
+                        <CloseIcon fill={theme === 'dark' ? '#fff' : '#000'} />
+                    </StyledPromptDialogHeaderCloseButton>
+                </StyledPromptDialogHeader>
+                <StyledContainer>
+                    {promptHistory.map((prompt, index) => (
+                        <PromptStyle>
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                            }}>
+                                <StyledToggleButton isToggled={isShown[index]} theme={theme} onClick={() => {
+                                    toggleIsShown(prev => ({
+                                        ...prev,
+                                        [index]: !prev[index],
+                                    }));
+                                }} />
+                                <PromptHistoryTitle onClick={() => {
+                                    toggleIsShown(prev => ({
+                                        ...prev,
+                                        [index]: !prev[index],
+                                    }));
+                                }}>
+                                    {prompt.name}
+                                </PromptHistoryTitle>
+                            </div>
+                            <PromptHistoryMessagesContainer isShown={isShown[index]}>
+                                {
+                                    prompt.messages.map((message, _) => (
+                                        <StyledMessageWrapper type={message.type} theme={theme}>
+                                            <ReactMarkdown components={components} children={message.message} />
+                                        </StyledMessageWrapper>
+                                    ))}
+                            </PromptHistoryMessagesContainer>
+                        </PromptStyle>
+                    ))}
+                </StyledContainer>
+            </StyledPromptDialogContainer>
+        </StyledPromptDialog>
+    );
+};
+
 const App = () => {
     const [selectedOption, setSelectedOption] = useState(window.location.href && window.location.href.indexOf("prompts") !== -1 ? 'prompts' : 'components');
     const [tooltipText, setTooltipText] = useState('Copy!');
     const [showTooltip, setShowTooltip] = useState(false);
     const [showSwitchThemeTooltip, setShowSwitchThemeTooltip] = useState(false);
     const [theme, setTheme] = useState('dark');
+    const [showPromptDialog, setShowPromptDialog] = useState({
+        show: prompt === 'calendar',
+        promptHistory: prompt === 'calendar' ? calendarPromptHistory : null,
+    });
 
     const handleOptionSelect = (option) => {
         setSelectedOption(option);
@@ -1187,10 +1423,11 @@ const App = () => {
                                 {showSwitchThemeTooltip ? <Tooltip bottom={20} theme={theme}>{theme === 'dark' ? 'Turn on the lights' : 'Turn off the lights'}</Tooltip> : null}
                             </WidgetButton>
                         </WidgetButtonWrapper>
-                        {selectedOption === 'components' ? <ComponentList theme={theme} /> : <ApiAndPrompts theme={theme} />}
+                        {selectedOption === 'components' ? <ComponentList theme={theme} setShowPromptDialog={setShowPromptDialog} /> : <ApiAndPrompts theme={theme} setShowPromptDialog={setShowPromptDialog} />}
                     </RightComponent>
                 </MainContainer>
             </Container>
+            {showPromptDialog.show ? <PromptDialog theme={theme} setShowPromptDialog={setShowPromptDialog} promptHistory={showPromptDialog.promptHistory} /> : null}
         </Wrapper>
     );
 };

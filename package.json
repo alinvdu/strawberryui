@@ -54,7 +54,10 @@
     ]
   },
   "devDependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
     "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-image": "^3.0.2",
     "@storybook/addon-essentials": "^7.0.4",
     "@storybook/addon-interactions": "^7.0.4",
     "@storybook/addon-links": "^7.0.4",
@@ -63,18 +66,21 @@
     "@storybook/react": "^7.0.4",
     "@storybook/react-webpack5": "^7.0.4",
     "@storybook/testing-library": "^0.0.14-next.2",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
     "babel-plugin-named-exports-order": "^0.0.2",
+    "prism-react-renderer": "^2.0.4",
     "prop-types": "^15.8.1",
+    "react-markdown": "^8.0.7",
+    "react-scripts": "5.0.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "remark-gfm": "^3.0.1",
     "rollup": "^2.79.1",
     "rollup-plugin-image": "^1.0.2",
     "storybook": "^7.0.4",
     "storybook-dark-mode": "^3.0.0",
-    "webpack": "^5.79.0",
-    "@rollup/plugin-image": "^3.0.2",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "webpack": "^5.79.0"
   }
 }
