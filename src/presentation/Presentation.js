@@ -8,6 +8,7 @@ import iconGroup1 from './assets/images/icon-group-1.png';
 import iconGroup2 from './assets/images/icon-group-2.png';
 import iconGroup1White from './assets/images/icon-group-1-white.png';
 import iconGroup2White from './assets/images/icon-group-2-white.png';
+import gptSrc from './assets/images/chatGPT-logo.jpg';
 import MusicWidget from '../components/music-widget/MusicWidget';
 import LoginPage from '../components/login-page/LoginPage';
 import Pagination from '../components/pagination/Pagination';
@@ -24,18 +25,20 @@ import calendarPromptHistory from "../components/calendar/messages/messages.json
 
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { atomDark, solarizedlight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-const components = {
-    code({ node, inline, className, children, ...props }) {
-        const match = /language-(\w+)/.exec(className || '')
-        return !inline && match ? (
-            <SyntaxHighlighter style={atomDark} language={match[1]} PreTag="div" children={String(children).replace(/\n$/, '')} {...props} />
-        ) : (
-            <code className={className} {...props}>
-                {children}
-            </code>
-        )
+const getComponent = (theme) => {
+    return {
+        code({ node, inline, className, children, ...props }) {
+            const match = /language-(\w+)/.exec(className || '')
+            return !inline && match ? (
+                <SyntaxHighlighter style={theme === 'dark' ? atomDark : solarizedlight} language={match[1]} PreTag="div" children={String(children).replace(/\n$/, '')} {...props} />
+            ) : (
+                <code className={className} {...props}>
+                    {children}
+                </code>
+            )
+        }
     }
 }
 
@@ -854,16 +857,17 @@ const ButtonsContainer = styled.div`
 const StyledShowPromptHistoryButtonWrapper = styled.div`
     font-family: 'Roboto Condensed', sans-serif;
     font-size: 15px;
-    color: rgba(38, 209, 220, 0.9);
+    color: ${({ theme }) => theme === 'dark' ? `rgba(38, 209, 220, 1)` : `#126065`};
     cursor: pointer;
+    opacity: 0.9;
 
     &:hover {
-        color: rgba(38, 209, 220, 1);
+        opacity: 1;
     }
 `;
 
-const ShowPromptHistoryButton = ({ onClick }) => (
-    <StyledShowPromptHistoryButtonWrapper onClick={onClick}>
+const ShowPromptHistoryButton = ({ onClick, theme }) => (
+    <StyledShowPromptHistoryButtonWrapper theme={theme} onClick={onClick}>
         Show Prompt History
     </StyledShowPromptHistoryButtonWrapper>
 );
@@ -891,7 +895,7 @@ const Prompt = ({ description, title, theme, promptHistory, setShowPromptDialog 
             <PromptDescription isExpanded={isExpanded} ref={descriptionRef}>{description}</PromptDescription>
             {!isExpanded && showExpandedButton ? <Ellipsis>...</Ellipsis> : null}
             <ButtonsContainer>
-                {promptHistory ? <ShowPromptHistoryButton onClick={() => {
+                {promptHistory ? <ShowPromptHistoryButton theme={theme} onClick={() => {
                     setShowPromptDialog({
                         show: true,
                         promptHistory
@@ -1184,11 +1188,11 @@ const StyledPromptDialogContainer = styled.div`
     transform: translate(-50%, -50%);
     width: 1200px;
     height: calc(100% - 100px);
-    background-color: #0c151d;
+    background-color: ${({ theme }) => theme === 'dark' ? '#0c151d' : '#a8cbdb'};
     border-radius: 21px;
     box-shadow: -14px 14px 20px 8px rgba(0, 0, 0, 0.49);
-    border: 1px solid ${({ theme }) => theme === 'dark' ? `rgba(38, 209, 220, 0.29)` : `#61a7ab`};
-    padding: 21px;
+    border: 1px solid ${({ theme }) => theme === 'dark' ? `rgba(38, 209, 220, 0.29)` : `transparent`};
+    padding: 21px 0;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -1203,12 +1207,16 @@ const StyledPromptDialogHeader = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-between;
+    padding: 0 21px;
+    box-sizing: border-box;
 `;
 
 const StyledPromptDialogHeaderTitle = styled.div`
     font-size: 25px;
     font-weight: 500;
     font-family: 'Roboto Condensed', sans-serif;
+
+    color: ${({ theme }) => theme === 'dark' ? 'white' : 'rgb(18, 96, 101)'};
 `;
 
 const StyledPromptDialogHeaderCloseButton = styled.div`
@@ -1229,6 +1237,9 @@ const StyledContainer = styled.div`
     min-height: 0;
     flex-direction: column;
     overflow: auto;
+    padding: 0 21px;
+
+    color: ${({ theme }) => theme === 'dark' ? 'white' : 'rgb(18, 96, 101)'};
 `;
 
 const PromptStyle = styled.div`
@@ -1267,7 +1278,7 @@ const StyledMessageWrapper = styled.div`
     box-sizing: border-box;
     margin-right: 10px;
     border-radius: 8px;
-    background-color: ${({ type }) => type === 'user_prompt' ? '#101e2b' : '#133241'};
+    background-color: ${({ type, theme }) => theme === 'light' ? '#a8cbdb' : type === 'user_prompt' ? '#101e2b' : '#133241'};
     flex-direction: column;
 `;
 
@@ -1288,6 +1299,35 @@ const params = new URLSearchParams(window.location.search);
 const prompt = params.get('prompt');
 const history = params.get('history');
 
+const StyledGptIcon = styled.img`
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+`;
+
+const GPTIcon = () => (
+    <StyledGptIcon src={gptSrc} />
+);
+
+const UserIcon = ({ className, theme }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill={theme === 'dark' ? `rgba(38, 209, 220, 0.29)` : `#61a7ab`} viewBox="0 0 24 24" className={className}><path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3zm9 11v-1a7 7 0 0 0-7-7h-4a7 7 0 0 0-7 7v1h2v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1z"></path></svg>
+);
+
+const StyledUserIcon = styled(UserIcon)`
+    border-radius: 8px;
+`;
+
+const StyledUserIconWrapper = styled.div`
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    background: ${({ theme }) => theme === 'dark' ? `rgba(39, 61, 96, 1)` : `#a8cbdb`};
+    border: 1px solid ${({ theme }) => theme === 'dark' ? `rgba(38, 209, 220, 0.29)` : `#61a7ab`};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
 const PromptDialog = ({ theme, promptHistory, setShowPromptDialog }) => {
     const [isShown, toggleIsShown] = useState(promptHistory.reduce((acc, value, index) => {
         if (prompt) {
@@ -1303,14 +1343,14 @@ const PromptDialog = ({ theme, promptHistory, setShowPromptDialog }) => {
         <StyledPromptDialog>
             <StyledPromptDialogContainer theme={theme}>
                 <StyledPromptDialogHeader>
-                    <StyledPromptDialogHeaderTitle>
-                        Prompt History
+                    <StyledPromptDialogHeaderTitle theme={theme}>
+                        Calendar Component Design History with ChatGPT
                     </StyledPromptDialogHeaderTitle>
                     <StyledPromptDialogHeaderCloseButton onClick={() => setShowPromptDialog({ show: false, promptHistory: null })}>
-                        <CloseIcon fill={theme === 'dark' ? '#fff' : '#000'} />
+                        <CloseIcon fill={theme === 'dark' ? '#fff' : 'rgb(18, 96, 101)'} />
                     </StyledPromptDialogHeaderCloseButton>
                 </StyledPromptDialogHeader>
-                <StyledContainer>
+                <StyledContainer theme={theme}>
                     {promptHistory.map((prompt, index) => (
                         <PromptStyle>
                             <div style={{
@@ -1336,7 +1376,10 @@ const PromptDialog = ({ theme, promptHistory, setShowPromptDialog }) => {
                                 {
                                     prompt.messages.map((message, _) => (
                                         <StyledMessageWrapper type={message.type} theme={theme}>
-                                            <ReactMarkdown components={components} children={message.message} />
+                                            {message.type === 'user_prompt' ? <StyledUserIconWrapper theme={theme}>
+                                                <StyledUserIcon />
+                                            </StyledUserIconWrapper> : <GPTIcon />}
+                                            <ReactMarkdown theme={theme} components={getComponent(theme)} children={message.message} />
                                         </StyledMessageWrapper>
                                     ))}
                             </PromptHistoryMessagesContainer>

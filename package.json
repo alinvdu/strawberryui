@@ -23,7 +23,8 @@
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "build-library": "rollup -c"
+    "build-library": "rollup -c",
+    "deploy": "npm run build&&gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -70,6 +71,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "babel-plugin-named-exports-order": "^0.0.2",
+    "gh-pages": "^5.0.0",
     "prism-react-renderer": "^2.0.4",
     "prop-types": "^15.8.1",
     "react-markdown": "^8.0.7",
