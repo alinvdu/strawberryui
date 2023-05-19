@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.bd273404.css",
-    "main.js": "/static/js/main.b14f572e.js",
+    "main.js": "/static/js/main.0a81a6fd.js",
     "static/js/787.ec5ded6b.chunk.js": "/static/js/787.ec5ded6b.chunk.js",
     "static/media/presentation-bg.jpg": "/static/media/presentation-bg.f85d48383d331f1f5b57.jpg",
     "static/media/presentation-bg-white.jpg": "/static/media/presentation-bg-white.b20cec17dab8d2f4f8a8.jpg",
@@ -13,17 +13,18 @@
     "static/media/logo-bg.png": "/static/media/logo-bg.134a27445c9b81796ef7.png",
     "static/media/wonky-strawberry.png": "/static/media/wonky-strawberry.86baf9f6545ba3b0a9e6.png",
     "static/media/icon-group-2-white.png": "/static/media/icon-group-2-white.9209d86e61559330f7b4.png",
-    "static/media/icon-group-1.png": "/static/media/icon-group-1.a6c2a30349137c2c663f.png",
-    "static/media/icon-group-2.png": "/static/media/icon-group-2.85c19b4170f5941483e5.png",
+    "static/media/icon-group-2.png": "/static/media/icon-group-2.67edfcca8717932b7fcf.png",
+    "static/media/icon-group-1.png": "/static/media/icon-group-1.c38adc04b3535d24f63a.png",
     "static/media/icon-group-1-white.png": "/static/media/icon-group-1-white.de2a3608ac80a80660e4.png",
+    "static/media/chatGPT-logo.jpg": "/static/media/chatGPT-logo.ca0967b1bf841093e9be.jpg",
     "static/media/strawberry-dec.png": "/static/media/strawberry-dec.9947cd0bfa2a11f7f4b1.png",
     "index.html": "/index.html",
     "main.bd273404.css.map": "/static/css/main.bd273404.css.map",
-    "main.b14f572e.js.map": "/static/js/main.b14f572e.js.map",
+    "main.0a81a6fd.js.map": "/static/js/main.0a81a6fd.js.map",
     "787.ec5ded6b.chunk.js.map": "/static/js/787.ec5ded6b.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.bd273404.css",
-    "static/js/main.b14f572e.js"
+    "static/js/main.0a81a6fd.js"
   ]
 }
